@@ -1,0 +1,20 @@
+---
+title: Settings
+description: Display, import, online-download and cast quality options.
+---
+
+Open **SETTINGS** from the Main menu. Tap **Save** to keep your changes and go back.
+
+| Setting | What it does |
+|---|---|
+| **Edge smoothing** | Softens jagged edges on the projection. |
+| **Screen resolution** | **Low**, **Medium** or **High** (50%, 75% or 100% of full resolution). Lower is smoother on slower devices and with many grids; higher is sharper. |
+| **Import quality** | **Low**, **Medium** or **High**. How your own imported videos are converted. Higher looks better and takes more storage. Doesn't change videos you've already imported. |
+| **Online quality** | The same choice for videos downloaded from the **ONLINE** tab. Doesn't change earlier downloads. |
+| **Cast quality** | **Low**, **Medium** or **High** bit rate for casting. Applies the next time you start a cast. |
+| **Memory monitor** | Shows a live memory readout on the calibration screen. Mostly for troubleshooting. |
+| **Update email** | Lets you update the email address you signed up to news with. |
+
+:::tip
+Running out of space? Choose **Low** for import and online quality, and use **REMOVE** in the artwork picker to delete downloads you no longer need.
+:::

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="linear-gradient" x1="351.46" y1="583.56" x2="290.29" y2="577.12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#508e8f"/>
+      <stop offset="1" stop-color="#8ffcff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="469.88" y1="713.39" x2="450.57" y2="777.78" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="594.55" y1="366.62" x2="636.41" y2="310.28" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-4" x1="725.17" y1="499.86" x2="794.39" y2="499.86" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-5" x1="663.89" y1="670.49" x2="710.58" y2="755.82" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-6" x1="991.08" y1="-1080.82" x2="934.81" y2="-1086.74" gradientTransform="translate(-1027.72 123.07) rotate(58.18)" xlink:href="#linear-gradient"/>
+  </defs>
+  <path d="M261.36,526.06l113.61,8.44c.64-1.44,1.2-3.09,2.32-4.37l87.79-136.53c-23.11,4.84-46.03,11.14-67.96,20.02-38.37,15.52-80.42,37.83-108.35,69.06-9.49,10.61-23.21,30.07-27.41,43.38Z" fill="#8ffcff" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M261.36,526.06c-1.16,3.67.04,5.89,1.27,9.63,7.86,23.95,24.28,49.55,42.55,66.91,13.57,12.89,28.95,23.13,45.17,32.38.8-2.45,3.29-21.86,3.82-25.15,3.57-22.44,11.57-54.71,20.8-75.32l-113.61-8.44Z" fill="url(#linear-gradient)" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M446.43,686.74c-20.66-45.08-65.35-140.19-67.64-140.48-24.8,66.58-32.79,149.14-1.76,214.91,2.36,4.99,6.17,13.86,9.63,17.85l59.76-92.28Z" fill="#8ffcff" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M446.43,686.74l-59.76,92.29c.23.27.81.99,1.22,1.24,3.5,2.17,25.22,2.41,30.53,2.29,36.48-.85,74.44-13.7,104.52-34.25-27.52-17.92-53.62-38.02-76.5-61.57Z" fill="url(#linear-gradient-2)" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M692.39,309.08l-60.9,88.4c22.97,46.15,43.25,95.24,67.96,140.41.66,1.21,1.71,3.98,3.22,4.13,24.07-58.71,33.28-125.81,13.15-186.84-3.85-11.66-14.69-38.31-23.43-46.1Z" fill="#8ffcff" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M692.39,309.08c-.31-.27.08-.88-1.59-1.59-1.58-.67-6.37-1.21-8.44-1.55-36.77-5.92-82.58,3.27-114.57,22.25-1.89,1.12-8.35,5.06-9.34,6.43-.92,1.27-.5.82.32,1.55,26.39,17.68,51.45,37.74,72.72,61.3l60.9-88.4Z" fill="url(#linear-gradient-3)" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M818.74,550.75l-109.3-8.29c-2.5,5.18-82.78,128.49-84,129.42-.26.87,1.19,1.17,1.87,1.22,1.7.12,10.45-2.12,12.8-2.71,55.88-14.04,129.36-43.54,163.99-91.66,4.02-5.59,13.95-21.65,14.64-27.98Z" fill="#8ffcff" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M818.74,550.75c.06-.54.51-.86.34-1.92-.36-2.3-3.58-9.17-4.71-11.86-16.21-38.83-43.63-67.36-80.43-88-1.88,11.17-3.48,22.82-5.85,34.14-3.88,18.52-10.45,42.37-18.65,59.34l109.3,8.29Z" fill="url(#linear-gradient-4)" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M620.44,682.32c-4.53.82-7.66,1.15-12.32,1.2-51.42.53-103.21-3.77-154.65-2.66-.61.01-2.82.15-2.79.68,8.14,7.99,16.46,15.88,25.16,23.27,42.12,35.79,101.9,74.44,158.01,79.47,5.49.49,30.06,1.34,33.82-.74l-47.23-101.23Z" fill="#8ffcff" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M620.44,682.32l47.23,101.23c2.38-1.32,6.6-6.67,8.51-9.04,23.48-29.2,34.02-66.1,36.06-102.9.14-2.49.93-17.91.09-18.75-.79-.79-1.36-.1-2.11.08-28.05,12.42-59.54,23.94-89.78,29.39Z" fill="url(#linear-gradient-5)" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <polygon points="500.07 457.18 449.55 535.04 490.53 614.51 581.3 616.71 630.55 540.81 589.56 460.17 500.07 457.18" fill="#6bbdbf" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <polygon points="538.45 537.46 630.55 540.81 581.52 616.65 490.52 614.51 538.45 537.46" fill="#365f60" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <polygon points="630.55 540.81 589.56 460.16 500.07 457.18 538.45 537.48 630.55 540.81" fill="#8ffcff" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M414.45,297.01l48.5,92.89c1.44-.19,153.83,2.1,153.83,2.1-14.99-15.72-31.03-30.57-48.61-43.41-30.74-22.46-68.58-44.51-106.53-51.19-12.89-2.27-34.76-3.55-47.2-.39Z" fill="#8ffcff" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <path d="M414.45,297.01c-3.43.87-4.59,2.89-6.91,5.66-14.9,17.76-26.96,43.01-31.66,65.71-3.49,16.86-4.04,33.84-3.4,51.01.69-.23,18.68-8.03,21.51-9.22,19.27-8.09,48.37-17.5,68.96-20.27l-48.5-92.89Z" fill="url(#linear-gradient-6)" stroke="#414042" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+</svg>

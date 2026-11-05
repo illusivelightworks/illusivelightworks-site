@@ -1,0 +1,28 @@
+---
+title: Shader
+description: Adjust real-time shader art with its own speed and scale controls.
+---
+
+Shaders are visuals the app generates live. They animate forever, have no audio and no timeline, and work with everything else: corner pins, masks, warp paint, color and key.
+
+## Using a shader
+
+1. Pick one from the **SHADERS** tab of the [artwork picker](/docs/artwork/).
+2. In Final Display, choose the **Shader** tool.
+3. Use the arrows at the top of the panel to choose the shader grid.
+
+## Controls
+
+| Control | What it does |
+|---|---|
+| **Speed** | How fast the animation runs. Zero freezes it, and changing it never makes the picture jump. |
+| **Scale** | How zoomed in the pattern is. |
+| **Reset** (trash can) | Puts the selected grid's sliders back to their defaults. |
+
+## Good to know
+
+- The Shader tool works on **one grid at a time**; there's no Modify All Grids here.
+- On a grid that isn't a shader the controls are disabled and the app says "This control only works for Shader grids".
+- Changing a grid's art starts its shader settings from the defaults again. Duplicating a grid keeps them.
+- Slider changes are saved with the project and can be undone.
+- The playback bar's speed control is for videos and doesn't affect shaders.

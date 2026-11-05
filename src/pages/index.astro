@@ -1,0 +1,103 @@
+---
+const appStore = 'https://apps.apple.com/us/app/ilw-light-mapper/id6736877410';
+const features = [
+	{ title: 'Pick the art', text: 'A growing library of animations, real-time shaders and online videos, or bring your own media.', img: '/img/mac-slide1.png' },
+	{ title: 'Precision alignment', text: 'Drag the four corners to fit walls, windows and objects exactly. Use as many grids as you need.', img: '/img/mac-slide2.png' },
+	{ title: 'Different art in every shape', text: 'Additive and subtractive masks control exactly where visuals appear.', img: '/img/mac-slide3.png' },
+	{ title: 'Warp it, tune it', text: 'Paint organic warps onto your art, then dial in color, speed and more.', img: '/img/mac-slide4.png' },
+	{ title: 'Save it, share it, reuse it', text: 'Keep every setup by name and move projects between devices.', img: '/img/mac-slide5.png' },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Illusive Lightworks | ILW Light Mapper</title>
+	<meta name="description" content="ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac. Align video to any surface, mask it, warp it and cast it." />
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<meta property="og:title" content="ILW Light Mapper" />
+	<meta property="og:description" content="Projection mapping in your pocket. Pick the art. Light up the room." />
+	<meta property="og:image" content="https://www.illusivelightworks.com/img/mac-slide2.png" />
+</head>
+<body>
+	<header class="top">
+		<a class="brand" href="/"><img src="/img/logomark.svg" alt="" width="32" height="32" /> Illusive Lightworks</a>
+		<nav>
+			<a href="/docs/">Docs</a>
+			<a href="/docs/quick-start/">Quick start</a>
+			<a class="cta small" href={appStore}>Get the app</a>
+		</nav>
+	</header>
+
+	<section class="hero">
+		<img class="icon" src="/img/app-icon.png" alt="ILW Light Mapper app icon" width="120" height="120" />
+		<h1>Pick the art.<br />Light up the room.</h1>
+		<p>ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac. Fit video to walls, windows and objects, mask it, warp it and cast it to a projector.</p>
+		<div class="buttons">
+			<a class="cta" href={appStore}>Download on the App Store</a>
+			<a class="ghost" href="/docs/quick-start/">Read the guide</a>
+		</div>
+		<img class="shot" src="/img/mac-slide2.png" alt="Corner calibration in ILW Light Mapper on a Mac" />
+	</section>
+
+	<section class="features">
+		{features.map((f, i) => (
+			<article class={i % 2 ? 'row flip' : 'row'}>
+				<div class="copy"><h2>{f.title}</h2><p>{f.text}</p></div>
+				<img src={f.img} alt={f.title} loading="lazy" />
+			</article>
+		))}
+	</section>
+
+	<section class="docs-cta">
+		<h2>Every tool, explained</h2>
+		<p>Step-by-step guides for every screen and control, including the long-press tricks.</p>
+		<a class="cta" href="/docs/">Open the documentation</a>
+	</section>
+
+	<footer>
+		<p>
+			© Illusive Lightworks ·
+			<a href="/docs/">Docs</a> ·
+			<a href="https://www.tiktok.com/@illusivelightworks">TikTok</a> ·
+			<a href={appStore}>App Store</a>
+		</p>
+	</footer>
+</body>
+</html>
+
+<style is:global>
+	:root { --bg:#071a1d; --panel:#0d2a2f; --line:#1f4a50; --text:#e6f4f5; --muted:#8fb0b4; --accent:#00e5da; }
+	* { box-sizing: border-box; }
+	body { margin:0; background: radial-gradient(1200px 600px at 50% -200px, #0b4d52 0%, var(--bg) 60%) no-repeat, var(--bg); color:var(--text); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height:1.55; }
+	a { color: var(--accent); }
+	.top { display:flex; justify-content:space-between; align-items:center; padding:14px 24px; max-width:1100px; margin:0 auto; }
+	.brand { display:flex; gap:10px; align-items:center; color:var(--text); text-decoration:none; font-weight:700; letter-spacing:.02em; }
+	.top nav { display:flex; gap:18px; align-items:center; }
+	.top nav a { color:var(--text); text-decoration:none; }
+	.cta { display:inline-block; background:var(--accent); color:#032327 !important; font-weight:700; padding:12px 22px; border-radius:10px; text-decoration:none; }
+	.cta.small { padding:7px 14px; }
+	.ghost { display:inline-block; border:1px solid var(--line); color:var(--text); padding:12px 22px; border-radius:10px; text-decoration:none; }
+	.hero { text-align:center; padding:48px 24px 24px; max-width:1000px; margin:0 auto; }
+	.hero .icon { border-radius:26px; }
+	.hero h1 { font-size:clamp(2.4rem, 6vw, 4.2rem); line-height:1.05; margin:.4em 0 .3em; }
+	.hero p { max-width:640px; margin:0 auto 24px; color:var(--muted); font-size:1.1rem; }
+	.buttons { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+	.shot { width:100%; max-width:900px; margin-top:36px; border-radius:16px; }
+	.features { max-width:1100px; margin:40px auto; padding:0 24px; display:grid; gap:56px; }
+	.row { display:grid; grid-template-columns: 1fr 1.4fr; gap:32px; align-items:center; }
+	.row.flip { grid-template-columns: 1.4fr 1fr; }
+	.row.flip .copy { order:2; }
+	.row img { width:100%; border-radius:14px; border:1px solid var(--line); }
+	.row h2 { font-size:1.8rem; margin:0 0 .3em; }
+	.row p { color:var(--muted); font-size:1.05rem; }
+	.docs-cta { text-align:center; padding:56px 24px; background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+	.docs-cta p { color:var(--muted); }
+	footer { text-align:center; color:var(--muted); padding:28px 24px 48px; }
+	@media (max-width: 760px) {
+		.row, .row.flip { grid-template-columns: 1fr; }
+		.row.flip .copy { order:0; }
+		.top nav a:not(.cta) { display:none; }
+	}
+</style>

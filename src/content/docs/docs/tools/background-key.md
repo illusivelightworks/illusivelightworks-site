@@ -1,0 +1,21 @@
+---
+title: Background Key
+description: Make a color in your video transparent, such as a black background.
+---
+
+Background Key removes a chosen color from a grid, so only the rest of the picture is projected. It's most useful for videos with a solid background.
+
+New grids start with the key **on** and keying out **black**, at the smallest threshold. Pure black is already treated as transparent, which is usually what you want for projection: black doesn't light up anything.
+
+## Controls
+
+| Control | What it does |
+|---|---|
+| **Enable** switch | Turns the key on or off for the grid. |
+| **Key color** (preview with **R**, **G**, **B** sliders) | The color to remove. |
+| **Threshold** | How close to the key color a pixel must be to be removed. Low removes only the exact color; higher removes similar shades too. |
+| **Reset** (trash can) | Back to a new grid's defaults: key on, black, smallest threshold. One undo step. |
+
+## Which grid?
+
+The arrows at the top of the panel choose the grid. **Modify All Grids** applies changes to all of them. Settings are saved with the project, per grid.

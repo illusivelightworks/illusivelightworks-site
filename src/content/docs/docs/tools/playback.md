@@ -1,0 +1,31 @@
+---
+title: Playback bar
+description: Play, pause, scrub, change speed and link grids from the bar along the bottom of Final Display.
+---
+
+The bar along the bottom of Final Display controls video playback. Tap the chevron in the middle to collapse or expand it.
+
+## Timeline view (default)
+
+| Control | What it does |
+|---|---|
+| **Play / Pause** | Starts or stops the video. The button is white while playing and dark while paused. |
+| **Timeline slider** | Drag to scrub. Playback pauses while you drag and resumes from where you let go if it was playing. |
+| **Grid selector** | Choose which grid the bar controls. |
+| **Modify All Grids** | The bar controls every grid. The grid selector is hidden. |
+
+## Speed view
+
+Tap the **lightning bolt** next to the timeline to swap to the **Speed** slider (its label shows values such as "1x"). Tap the media-player icon to swap back. The choice is remembered. Each grid keeps its own speed.
+
+## Link toggle
+
+If more than one grid is showing the *same file*, a **link** toggle appears. Linked grids share one player: they play, pause and scrub together, and a small label (such as "x3") shows how many grids are sharing. Unlink them to control each one separately. When grids are linked, controlling one controls all of them even with Modify All Grids off.
+
+## Modify All Grids
+
+Turning it on copies the selected grid's play/pause state, position (as a fraction of each video's length) and speed to every grid. It can be undone.
+
+## Only for video
+
+The bar is for **video** grids. With an image or shader grid selected the controls stay visible but are disabled; with Modify All Grids on, the bar follows the first video grid and ignores the rest.

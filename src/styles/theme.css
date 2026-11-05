@@ -1,0 +1,38 @@
+/* ILW Light Mapper docs: the app's dark teal / cyan look. */
+:root {
+	--sl-color-accent-low: #053b40;
+	--sl-color-accent: #00a8b0;
+	--sl-color-accent-high: #7ff4f0;
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #e6f4f5;
+	--sl-color-gray-2: #bcd3d6;
+	--sl-color-gray-3: #8fb0b4;
+	--sl-color-gray-4: #587a7f;
+	--sl-color-gray-5: #2b4a4f;
+	--sl-color-gray-6: #112a2e;
+	--sl-color-black: #071a1d;
+}
+:root[data-theme='light'] {
+	--sl-color-accent-low: #bff3f1;
+	--sl-color-accent: #007f86;
+	--sl-color-accent-high: #00474c;
+	--sl-color-white: #071a1d;
+	--sl-color-gray-1: #112a2e;
+	--sl-color-gray-2: #2b4a4f;
+	--sl-color-gray-3: #587a7f;
+	--sl-color-gray-5: #bcd3d6;
+	--sl-color-gray-6: #e6f4f5;
+	--sl-color-gray-7: #f3fafa;
+	--sl-color-black: #ffffff;
+}
+.site-title img { height: 1.6rem; }
+.sl-markdown-content img { border-radius: 10px; border: 1px solid var(--sl-color-gray-5); }
+.sl-markdown-content kbd { white-space: nowrap; }
+.control-table td:first-child { white-space: nowrap; font-weight: 600; }
+.needs-screenshot {
+	border: 1px dashed var(--sl-color-gray-4);
+	border-radius: 10px;
+	padding: .75rem 1rem;
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}

@@ -1,0 +1,17 @@
+---
+title: Audio
+description: Set the volume of each video grid.
+---
+
+The Audio tool sets the volume of a grid's video.
+
+- **Audio is off by default** for each grid.
+- Each grid has its own volume. Several grids can play sound at the same time.
+- The slider is available for **video** grids only. Images and shaders have no audio, so the slider is disabled for them.
+- Use the arrows at the top of the panel to choose the grid, or **Modify All Grids** to set them all at once.
+
+Settings are saved with the project.
+
+:::tip
+Looking for how fast a video plays? That's in the [Playback bar](/docs/tools/playback/), not here.
+:::
