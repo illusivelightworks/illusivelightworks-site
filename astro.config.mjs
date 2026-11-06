@@ -11,6 +11,7 @@ export default defineConfig({
 			description: 'Guides and reference for ILW Light Mapper, the projection mapping app for iPhone, iPad and Mac.',
 			logo: { src: './public/img/logomark.svg', alt: 'Illusive Lightworks' },
 			favicon: '/favicon.png',
+			social: [{ icon: 'tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@illusivelightworks' }],
 			customCss: ['./src/styles/theme.css'],
 			// The landing page lives at / (src/pages/index.astro); everything documentation-related is under /docs/.
 			sidebar: [
@@ -39,6 +40,7 @@ export default defineConfig({
 					{ label: 'Export and import (.ilwj)', slug: 'docs/export-import' },
 				]},
 				{ label: 'More', items: [
+					{ label: 'Watch and share', link: '/watch/' },
 					{ label: 'Casting to a screen', slug: 'docs/casting' },
 					{ label: 'Settings', slug: 'docs/settings' },
 					{ label: 'Gestures and shortcuts', slug: 'docs/gestures' },

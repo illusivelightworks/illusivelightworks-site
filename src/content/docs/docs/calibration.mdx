@@ -3,7 +3,9 @@ title: Corner calibration
 description: Fit each grid to your surface with corner pins, nudge arrows, touch gestures and layer controls.
 ---
 
-![Corner calibration](/img/mac-slide2.png)
+import Screenshot from '../../../components/Screenshot.astro';
+
+<Screenshot name="calibration-full" alt="Corner calibration with two grids" fallback="/img/mac-slide2.png" />
 
 Calibration is where you line each grid up with the real surface. You work on **one grid at a time**, and the grid you're editing is the *active grid*.
 
@@ -24,6 +26,8 @@ The strip scrolls sideways if you have many grids. A press that turns into a scr
 | **CHANGE ART** | Opens the [artwork picker](/docs/artwork/) for the active grid. Its alignment, masks and colors are kept. |
 | **Press and hold a numbered tile** (about ⅔ of a second) | **Duplicates** that grid. The copy sits on top and keeps the media, corners, size and rotation, color, key, speed, sound and mask membership. |
 
+<Screenshot name="calibration-grid-strip" alt="The numbered grid tiles with +GRID, -GRID and CHANGE ART" />
+
 ## Moving the corners
 
 Each grid has four **corner pins**. Drag a pin to the matching corner of your surface. The picture is warped to fit exactly between the four pins.
@@ -42,6 +46,8 @@ Nudging has no limits, so a corner can move beyond the edge of the picture.
 - **No pinch available (Mac)?** Switch on **Scale Controls** and/or **Rotation Controls** on the right. An on-screen overlay appears with a width slider, a height slider and a rotation dial, each with arrows for small steps. Hold a control for a moment and the surrounding panels and pins clear away so you can see what you're doing.
 
 The sliders cover a normal range, but the arrows and gestures can go past the ends.
+
+<Screenshot name="calibration-overlay" alt="The scale and rotation controls overlay" />
 
 ## Right-hand panel
 

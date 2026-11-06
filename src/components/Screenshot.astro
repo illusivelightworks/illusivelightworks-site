@@ -1,0 +1,37 @@
+---
+// <Screenshot name="mask-main" alt="The Mask tool" caption="Optional caption" fallback="/img/mac-slide3.png" />
+//
+// Looks for public/img/docs/<name>.png (or .jpg / .webp). Drop the real screenshot there and it appears.
+//   - Missing, in the local preview (npm run dev): a dashed "screenshot needed" box, so you can see what's missing.
+//   - Missing, on the published site: the optional `fallback` image if given, otherwise nothing at all.
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props { name: string; alt: string; caption?: string; fallback?: string; note?: string }
+const { name, alt, caption, fallback, note } = Astro.props;
+
+const exts = ['png', 'jpg', 'jpeg', 'webp'];
+const found = exts.map((e) => `${name}.${e}`).find((f) => fs.existsSync(path.join(process.cwd(), 'public/img/docs', f)));
+const src = found ? `/img/docs/${found}` : fallback;
+const dev = import.meta.env.DEV;
+---
+{src && (
+	<figure class="shot">
+		<img src={src} alt={alt} loading="lazy" />
+		{caption && <figcaption>{caption}</figcaption>}
+		{dev && !found && <p class="needs-screenshot">Placeholder image. Real screenshot needed: <code>public/img/docs/{name}.png</code>{note ? ` (${note})` : ''}</p>}
+	</figure>
+)}
+{!src && dev && (
+	<div class="needs-screenshot">
+		<strong>Screenshot needed:</strong> <code>public/img/docs/{name}.png</code><br />
+		{alt}{note ? ` (${note})` : ''}
+	</div>
+)}
+
+<style>
+	.shot { margin: 1.25rem 0; }
+	.shot img { max-width: 100%; height: auto; display: block; }
+	.shot figcaption { color: var(--sl-color-gray-3); font-size: var(--sl-text-sm); margin-top: .4rem; }
+	.needs-screenshot { margin: 1rem 0; }
+</style>

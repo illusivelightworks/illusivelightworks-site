@@ -3,6 +3,8 @@ title: Background Key
 description: Make a color in your video transparent, such as a black background.
 ---
 
+import Screenshot from '../../../../components/Screenshot.astro';
+
 Background Key removes a chosen color from a grid, so only the rest of the picture is projected. It's most useful for videos with a solid background.
 
 New grids start with the key **on** and keying out **black**, at the smallest threshold. Pure black is already treated as transparent, which is usually what you want for projection: black doesn't light up anything.
@@ -15,6 +17,8 @@ New grids start with the key **on** and keying out **black**, at the smallest th
 | **Key color** (preview with **R**, **G**, **B** sliders) | The color to remove. |
 | **Threshold** | How close to the key color a pixel must be to be removed. Low removes only the exact color; higher removes similar shades too. |
 | **Reset** (trash can) | Back to a new grid's defaults: key on, black, smallest threshold. One undo step. |
+
+<Screenshot name="background-key-tool" alt="The Background Key tool" />
 
 ## Which grid?
 

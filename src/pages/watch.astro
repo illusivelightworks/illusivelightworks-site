@@ -1,0 +1,119 @@
+---
+import Site from '../layouts/Site.astro';
+import { site } from '../data/site';
+import { videos } from '../data/videos';
+import { parseVideo } from '../lib/video';
+
+const items = videos.map(parseVideo).filter((v): v is NonNullable<typeof v> => v !== null);
+const bad = videos.length - items.length;
+const platforms = [...new Set(items.map((i) => i.platform))];
+const follow = [
+	['TikTok', site.social.tiktok],
+	['Instagram', site.social.instagram],
+	['YouTube', site.social.youtube],
+].filter(([, href]) => href);
+const dev = import.meta.env.DEV;
+---
+<Site title="Watch | Illusive Lightworks" description="Projection mapping clips, tutorials and visuals made with ILW Light Mapper.">
+	<section class="watch">
+		<h1>Watch</h1>
+		<p class="lede">Real surfaces, real art, and how it was made with ILW Light Mapper.</p>
+
+		<div class="follow">
+			{follow.map(([name, href]) => <a class="ghost" href={href}>Follow on {name}</a>)}
+			<a class="cta" href={site.appStore}>Get the app</a>
+		</div>
+
+		{platforms.length > 1 && (
+			<div class="filters" role="tablist" aria-label="Filter by platform">
+				<button class="chip on" data-filter="all">All</button>
+				{platforms.map((p) => <button class="chip" data-filter={p}>{p === 'tiktok' ? 'TikTok' : p === 'instagram' ? 'Instagram' : 'YouTube'}</button>)}
+			</div>
+		)}
+
+		{items.length > 0 && (
+			<div class="grid">
+				{items.map((v) => (
+					<figure class={`card ${v.portrait ? 'portrait' : 'wide'}`} data-platform={v.platform}>
+						<button class="player" data-embed={v.embed} aria-label={`Play: ${v.title ?? v.label + ' video'}`} style={v.thumb ? `background-image:url('${v.thumb}')` : ''}>
+							<span class="badge">{v.label}</span>
+							<span class="play" aria-hidden="true">▶</span>
+							{v.title && <span class="cap">{v.title}</span>}
+						</button>
+					</figure>
+				))}
+			</div>
+		)}
+
+		{items.length === 0 && (
+			<div class="empty">
+				<p>Clips are on the way.</p>
+				{follow.length > 0 && <p>In the meantime, you can find them on {follow.map(([n, h], i) => <><a href={h}>{n}</a>{i < follow.length - 1 ? ', ' : ''}</>)}.</p>}
+			</div>
+		)}
+
+		{dev && (
+			<aside class="devnote">
+				<strong>Only you see this, in the local preview.</strong>
+				Add videos in <code>src/data/videos.ts</code>.
+				{items.length === 0 && ' No videos are listed yet.'}
+				{bad > 0 && ` ${bad} link${bad > 1 ? 's' : ''} could not be read (check the URL).`}
+			</aside>
+		)}
+
+		<p class="note">Videos load from TikTok, Instagram or YouTube only when you press play.</p>
+	</section>
+</Site>
+
+<script>
+	// Click-to-load: nothing from the video platforms is requested until someone presses play.
+	document.querySelectorAll<HTMLButtonElement>('.player').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const src = btn.dataset.embed;
+			if (!src) return;
+			const frame = document.createElement('iframe');
+			frame.src = src;
+			frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+			frame.allowFullscreen = true;
+			frame.loading = 'lazy';
+			frame.title = btn.getAttribute('aria-label') ?? 'Video';
+			btn.replaceWith(frame);
+		});
+	});
+	// Platform filter.
+	const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+	chips.forEach((chip) => chip.addEventListener('click', () => {
+		chips.forEach((c) => c.classList.toggle('on', c === chip));
+		const f = chip.dataset.filter;
+		document.querySelectorAll<HTMLElement>('.card').forEach((card) => {
+			card.hidden = !(f === 'all' || card.dataset.platform === f);
+		});
+	}));
+</script>
+
+<style is:global>
+	.watch { max-width:1100px; margin:0 auto; padding:24px 24px 56px; }
+	.watch h1 { font-size:clamp(2.2rem,5vw,3.4rem); margin:.2em 0 .1em; }
+	.watch .lede { color:var(--muted); font-size:1.1rem; margin:0 0 22px; }
+	.watch .follow { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+	.watch .filters { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+	.watch .chip { background:transparent; color:var(--text); border:1px solid var(--line); border-radius:999px; padding:7px 16px; font:inherit; cursor:pointer; }
+	.watch .chip.on { background:var(--accent); border-color:var(--accent); color:#032327; font-weight:700; }
+	.watch .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; align-items:start; }
+	.watch .card { margin:0; background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+	.watch .card[hidden] { display:none; }
+	.watch .card.wide { grid-column:span 2; }
+	.watch .card.wide .player, .watch .card.wide iframe { aspect-ratio:16/9; }
+	.watch .card.portrait .player, .watch .card.portrait iframe { aspect-ratio:9/16; }
+	.watch .player, .watch iframe { display:block; width:100%; border:0; }
+	.watch .player { position:relative; cursor:pointer; color:#fff; text-align:left; padding:0; border:0;
+		background:radial-gradient(circle at 50% 35%, #0f5a61 0%, #082b30 70%) center/cover no-repeat; }
+	.watch .player:hover .play { transform:scale(1.08); }
+	.watch .badge { position:absolute; top:10px; left:10px; font:600 .72rem system-ui; letter-spacing:.1em; text-transform:uppercase; background:rgba(3,35,39,.75); padding:4px 9px; border-radius:6px; }
+	.watch .play { position:absolute; inset:0; margin:auto; width:64px; height:64px; border-radius:50%; background:rgba(0,229,218,.9); color:#032327; display:grid; place-items:center; font-size:1.4rem; padding-left:4px; transition:transform .15s; }
+	.watch .cap { position:absolute; left:0; right:0; bottom:0; padding:28px 14px 12px; font-weight:600; background:linear-gradient(transparent, rgba(2,12,14,.9)); }
+	.watch .empty { border:1px dashed var(--line); border-radius:14px; padding:28px; color:var(--muted); text-align:center; }
+	.watch .devnote { margin-top:24px; border:1px dashed #b8a000; color:#e8d870; border-radius:10px; padding:12px 16px; font-size:.9rem; }
+	.watch .note { color:var(--muted); font-size:.85rem; margin-top:28px; }
+	@media (max-width:640px) { .watch .card.wide { grid-column:auto; } }
+</style>

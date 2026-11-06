@@ -3,7 +3,9 @@ title: Choosing artwork
 description: The artwork picker, with its Videos, My Imports, Shaders and Online tabs.
 ---
 
-![The artwork picker](/img/mac-slide1.png)
+import Screenshot from '../../../components/Screenshot.astro';
+
+<Screenshot name="artwork-videos" alt="The VIDEOS tab of the artwork picker" fallback="/img/mac-slide1.png" />
 
 The picker opens when you start a new project, and again whenever you tap **CHANGE ART** in corner calibration. It remembers where you left off, including the tab, filter and search.
 
@@ -15,6 +17,8 @@ The picker opens when you start a new project, and again whenever you tap **CHAN
 | **MY IMPORTS** | Videos and images you've brought in from your own device. |
 | **SHADERS** | Real-time generated visuals that animate live. No video file, no audio. |
 | **ONLINE** | Free stock video, searchable. Currently from Pixabay. |
+
+<Screenshot name="artwork-shaders" alt="The SHADERS tab" />
 
 ## Choosing and downloading
 
@@ -36,9 +40,13 @@ If the preview has sound, a speaker button lets you turn it on or off while prev
 
 Tap **IMPORT MEDIA** at the bottom to bring in a video or image from your device. Any shape or aspect ratio works; the app fits it for you. Imported videos are converted for smooth looping, and the **Import quality** setting controls the size/quality trade-off. See [Settings](/docs/settings/).
 
+<Screenshot name="artwork-my-imports" alt="The MY IMPORTS tab" />
+
 ## Online videos
 
 Select a result to see its poster, author, source and duration. **Download** saves it (the bar fills twice: once to download and once to convert it). It then appears under **My Downloads**, ready to **SELECT**. The source name is a link back to the video's page, which also credits the author.
+
+<Screenshot name="artwork-online" alt="The ONLINE tab with search and results" />
 
 ## Bottom buttons
 

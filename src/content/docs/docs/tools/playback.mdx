@@ -3,6 +3,8 @@ title: Playback bar
 description: Play, pause, scrub, change speed and link grids from the bar along the bottom of Final Display.
 ---
 
+import Screenshot from '../../../../components/Screenshot.astro';
+
 The bar along the bottom of Final Display controls video playback. Tap the chevron in the middle to collapse or expand it.
 
 ## Timeline view (default)
@@ -14,13 +16,19 @@ The bar along the bottom of Final Display controls video playback. Tap the chevr
 | **Grid selector** | Choose which grid the bar controls. |
 | **Modify All Grids** | The bar controls every grid. The grid selector is hidden. |
 
+<Screenshot name="playback-timeline" alt="The playback bar, timeline view" />
+
 ## Speed view
 
 Tap the **lightning bolt** next to the timeline to swap to the **Speed** slider (its label shows values such as "1x"). Tap the media-player icon to swap back. The choice is remembered. Each grid keeps its own speed.
 
+<Screenshot name="playback-speed" alt="The playback bar, speed view" />
+
 ## Link toggle
 
 If more than one grid is showing the *same file*, a **link** toggle appears. Linked grids share one player: they play, pause and scrub together, and a small label (such as "x3") shows how many grids are sharing. Unlink them to control each one separately. When grids are linked, controlling one controls all of them even with Modify All Grids off.
+
+<Screenshot name="playback-link" alt="Two grids linked, with the link toggle" />
 
 ## Modify All Grids
 

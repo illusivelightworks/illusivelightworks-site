@@ -1,0 +1,59 @@
+---
+import { site } from '../data/site';
+interface Props { title: string; description?: string; image?: string }
+const { title, description = 'ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac.', image = '/img/mac-slide2.png' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socials = [
+	['TikTok', site.social.tiktok], ['Instagram', site.social.instagram],
+	['YouTube', site.social.youtube], ['Discord', site.social.discord],
+].filter(([, href]) => href);
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>{title}</title>
+	<meta name="description" content={description} />
+	<link rel="canonical" href={canonical} />
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:image" content={new URL(image, Astro.site)} />
+</head>
+<body>
+	<header class="top">
+		<a class="brand" href="/"><img src="/img/logomark.svg" alt="" width="32" height="32" /> Illusive Lightworks</a>
+		<nav>
+			<a href="/watch/">Watch</a>
+			<a href="/docs/">Docs</a>
+			<a class="cta small" href={site.appStore}>Get the app</a>
+		</nav>
+	</header>
+	<slot />
+	<footer>
+		<p>
+			© Illusive Lightworks ·
+			<a href="/watch/">Watch</a> · <a href="/docs/">Docs</a>
+			{socials.map(([name, href]) => (<> · <a href={href}>{name}</a></>))}
+			· <a href={site.appStore}>App Store</a>
+		</p>
+	</footer>
+</body>
+</html>
+
+<style is:global>
+	:root { --bg:#071a1d; --panel:#0d2a2f; --line:#1f4a50; --text:#e6f4f5; --muted:#8fb0b4; --accent:#00e5da; }
+	* { box-sizing: border-box; }
+	body { margin:0; background: radial-gradient(1200px 600px at 50% -200px, #0b4d52 0%, var(--bg) 60%) no-repeat, var(--bg); color:var(--text); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height:1.55; }
+	a { color: var(--accent); }
+	.top { display:flex; justify-content:space-between; align-items:center; padding:14px 24px; max-width:1100px; margin:0 auto; }
+	.brand { display:flex; gap:10px; align-items:center; color:var(--text); text-decoration:none; font-weight:700; letter-spacing:.02em; }
+	.top nav { display:flex; gap:18px; align-items:center; }
+	.top nav a { color:var(--text); text-decoration:none; }
+	.cta { display:inline-block; background:var(--accent); color:#032327 !important; font-weight:700; padding:12px 22px; border-radius:10px; text-decoration:none; }
+	.cta.small { padding:7px 14px; }
+	.ghost { display:inline-block; border:1px solid var(--line); color:var(--text); padding:12px 22px; border-radius:10px; text-decoration:none; }
+	footer { text-align:center; color:var(--muted); padding:28px 24px 48px; }
+	@media (max-width: 760px) { .top nav a:not(.cta) { display:none; } }
+</style>
