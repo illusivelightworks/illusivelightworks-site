@@ -77,7 +77,13 @@ const slides = [
 		if (e.key === 'ArrowLeft') show(current - 1);
 		if (e.key === 'ArrowRight') show(current + 1);
 	});
-	dlg.addEventListener('close', () => { big.removeAttribute('src'); });
+	let opener = null;
+	document.querySelectorAll('.marquee .slide').forEach((b) => b.addEventListener('click', () => { opener = b; }));
+	dlg.addEventListener('close', () => {
+		big.removeAttribute('src');
+		// Closing hands focus back to the slide that was clicked; let go of it so the strip keeps scrolling.
+		if (opener) { opener.blur(); opener = null; }
+	});
 </script>
 
 <style is:global>
@@ -92,7 +98,8 @@ const slides = [
 		-webkit-mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 		mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
 	.marquee .track { display:flex; width:max-content; animation:drift 60s linear infinite; }
-	.marquee:hover .track, .marquee:focus-within .track { animation-play-state:paused; }
+	/* Pause under the mouse, or while a slide is keyboard-focused (not just clicked) so it does not stay stuck after the viewer closes. */
+	.marquee:hover .track, .marquee:has(.slide:focus-visible) .track { animation-play-state:paused; }
 	.marquee .slide { flex:none; margin:0 22px 0 0; padding:0; border:0; background:none; cursor:zoom-in; line-height:0; }
 	.marquee .slide:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:16px; }
 	.marquee .slide img { height:clamp(240px, 38vw, 460px); width:auto; display:block; border-radius:16px; border:1px solid var(--line); transition:border-color .15s; }
