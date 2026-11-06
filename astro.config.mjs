@@ -13,6 +13,7 @@ export default defineConfig({
 			favicon: '/favicon.png',
 			social: [{ icon: 'tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@illusivelightworks' }],
 			customCss: ['./src/styles/theme.css'],
+			components: { SocialIcons: './src/components/HeaderLinks.astro' },
 			// The landing page lives at / (src/pages/index.astro); everything documentation-related is under /docs/.
 			sidebar: [
 				{ label: 'Start here', items: [
@@ -43,7 +44,7 @@ export default defineConfig({
 					{ label: 'Settings', slug: 'docs/settings' },
 					{ label: 'Gestures and shortcuts', slug: 'docs/gestures' },
 					{ label: 'Troubleshooting', slug: 'docs/troubleshooting' },
-					{ label: 'Watch and share', link: '/watch/' },
+					{ label: 'Media', link: '/media/' },
 				]},
 			],
 		}),

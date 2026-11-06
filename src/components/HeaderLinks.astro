@@ -1,0 +1,24 @@
+---
+// Replaces Starlight's social-icons slot in the docs header so the docs show the same
+// top menu as the rest of the site: Home, Documentation, Media. The social icons stay.
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+const path = Astro.url.pathname;
+const links = [
+	['Home', '/', path === '/'],
+	['Documentation', '/docs/', path.startsWith('/docs')],
+	['Media', '/media/', path.startsWith('/media')],
+] as const;
+---
+<nav class="site-menu" aria-label="Site">
+	{links.map(([label, href, current]) => <a href={href} aria-current={current ? 'page' : undefined}>{label}</a>)}
+</nav>
+<Default {...Astro.props}><slot /></Default>
+
+<style>
+	@layer starlight.core {
+		.site-menu { display: flex; gap: 1.1rem; margin-inline-end: .5rem; }
+		.site-menu a { color: var(--sl-color-gray-2); text-decoration: none; font-size: var(--sl-text-sm); padding: .25rem 0; border-bottom: 2px solid transparent; }
+		.site-menu a:hover { color: var(--sl-color-white); }
+		.site-menu a[aria-current='page'] { color: var(--sl-color-white); border-bottom-color: var(--sl-color-accent); }
+	}
+</style>

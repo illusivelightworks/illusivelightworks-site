@@ -1,4 +1,4 @@
-// The Watch page (/watch). Paste a link and the page works out the platform.
+// The Media page (/media). Paste a link and the page works out the platform.
 //
 //   url     TikTok video, Instagram reel/post, or YouTube video/short  (required)
 //   title   shown on the card before it is played                      (recommended)

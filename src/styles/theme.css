@@ -1,4 +1,7 @@
 /* ILW Light Mapper docs: the app's dark teal / cyan look. */
+
+/* "Tip" hint boxes use the app's yellowish green (the lit buttons in the tools), not Starlight's purple.
+   Starlight colors its tip box with the --sl-color-purple* variables, so those are what we override. */
 :root {
 	--sl-color-accent-low: #053b40;
 	--sl-color-accent: #00a8b0;
@@ -11,6 +14,9 @@
 	--sl-color-gray-5: #2b4a4f;
 	--sl-color-gray-6: #112a2e;
 	--sl-color-black: #071a1d;
+	--sl-color-purple-low: #26300c;
+	--sl-color-purple: #b8d93e;
+	--sl-color-purple-high: #dcf08a;
 }
 :root[data-theme='light'] {
 	--sl-color-accent-low: #bff3f1;
@@ -24,6 +30,9 @@
 	--sl-color-gray-6: #e6f4f5;
 	--sl-color-gray-7: #f3fafa;
 	--sl-color-black: #ffffff;
+	--sl-color-purple-low: #eef8c8;
+	--sl-color-purple: #6f8c00;
+	--sl-color-purple-high: #3b4a00;
 }
 .site-title img { height: 1.6rem; }
 .sl-markdown-content img { border-radius: 10px; border: 1px solid var(--sl-color-gray-5); }

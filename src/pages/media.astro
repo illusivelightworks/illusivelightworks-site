@@ -14,9 +14,9 @@ const follow = [
 ].filter(([, href]) => href);
 const dev = import.meta.env.DEV;
 ---
-<Site title="Watch | Illusive Lightworks" description="Projection mapping clips, tutorials and visuals made with ILW Light Mapper.">
-	<section class="watch">
-		<h1>Watch</h1>
+<Site title="Media | Illusive Lightworks" description="Projection mapping clips, tutorials and visuals made with ILW Light Mapper.">
+	<section class="media">
+		<h1>Media</h1>
 		<p class="lede">Real surfaces, real art, and how it was made with ILW Light Mapper.</p>
 
 		<div class="follow">
@@ -92,28 +92,28 @@ const dev = import.meta.env.DEV;
 </script>
 
 <style is:global>
-	.watch { max-width:1100px; margin:0 auto; padding:24px 24px 56px; }
-	.watch h1 { font-size:clamp(2.2rem,5vw,3.4rem); margin:.2em 0 .1em; }
-	.watch .lede { color:var(--muted); font-size:1.1rem; margin:0 0 22px; }
-	.watch .follow { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
-	.watch .filters { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
-	.watch .chip { background:transparent; color:var(--text); border:1px solid var(--line); border-radius:999px; padding:7px 16px; font:inherit; cursor:pointer; }
-	.watch .chip.on { background:var(--accent); border-color:var(--accent); color:#032327; font-weight:700; }
-	.watch .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; align-items:start; }
-	.watch .card { margin:0; background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
-	.watch .card[hidden] { display:none; }
-	.watch .card.wide { grid-column:span 2; }
-	.watch .card.wide .player, .watch .card.wide iframe { aspect-ratio:16/9; }
-	.watch .card.portrait .player, .watch .card.portrait iframe { aspect-ratio:9/16; }
-	.watch .player, .watch iframe { display:block; width:100%; border:0; }
-	.watch .player { position:relative; cursor:pointer; color:#fff; text-align:left; padding:0; border:0;
+	.media { max-width:1100px; margin:0 auto; padding:24px 24px 56px; }
+	.media h1 { font-size:clamp(2.2rem,5vw,3.4rem); margin:.2em 0 .1em; }
+	.media .lede { color:var(--muted); font-size:1.1rem; margin:0 0 22px; }
+	.media .follow { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+	.media .filters { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+	.media .chip { background:transparent; color:var(--text); border:1px solid var(--line); border-radius:999px; padding:7px 16px; font:inherit; cursor:pointer; }
+	.media .chip.on { background:var(--accent); border-color:var(--accent); color:#032327; font-weight:700; }
+	.media .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; align-items:start; }
+	.media .card { margin:0; background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+	.media .card[hidden] { display:none; }
+	.media .card.wide { grid-column:span 2; }
+	.media .card.wide .player, .media .card.wide iframe { aspect-ratio:16/9; }
+	.media .card.portrait .player, .media .card.portrait iframe { aspect-ratio:9/16; }
+	.media .player, .media iframe { display:block; width:100%; border:0; }
+	.media .player { position:relative; cursor:pointer; color:#fff; text-align:left; padding:0; border:0;
 		background:radial-gradient(circle at 50% 35%, #0f5a61 0%, #082b30 70%) center/cover no-repeat; }
-	.watch .player:hover .play { transform:scale(1.08); }
-	.watch .badge { position:absolute; top:10px; left:10px; font:600 .72rem system-ui; letter-spacing:.1em; text-transform:uppercase; background:rgba(3,35,39,.75); padding:4px 9px; border-radius:6px; }
-	.watch .play { position:absolute; inset:0; margin:auto; width:64px; height:64px; border-radius:50%; background:rgba(0,229,218,.9); color:#032327; display:grid; place-items:center; font-size:1.4rem; padding-left:4px; transition:transform .15s; }
-	.watch .cap { position:absolute; left:0; right:0; bottom:0; padding:28px 14px 12px; font-weight:600; background:linear-gradient(transparent, rgba(2,12,14,.9)); }
-	.watch .empty { border:1px dashed var(--line); border-radius:14px; padding:28px; color:var(--muted); text-align:center; }
-	.watch .devnote { margin-top:24px; border:1px dashed #b8a000; color:#e8d870; border-radius:10px; padding:12px 16px; font-size:.9rem; }
-	.watch .note { color:var(--muted); font-size:.85rem; margin-top:28px; }
-	@media (max-width:640px) { .watch .card.wide { grid-column:auto; } }
+	.media .player:hover .play { transform:scale(1.08); }
+	.media .badge { position:absolute; top:10px; left:10px; font:600 .72rem system-ui; letter-spacing:.1em; text-transform:uppercase; background:rgba(3,35,39,.75); padding:4px 9px; border-radius:6px; }
+	.media .play { position:absolute; inset:0; margin:auto; width:64px; height:64px; border-radius:50%; background:rgba(0,229,218,.9); color:#032327; display:grid; place-items:center; font-size:1.4rem; padding-left:4px; transition:transform .15s; }
+	.media .cap { position:absolute; left:0; right:0; bottom:0; padding:28px 14px 12px; font-weight:600; background:linear-gradient(transparent, rgba(2,12,14,.9)); }
+	.media .empty { border:1px dashed var(--line); border-radius:14px; padding:28px; color:var(--muted); text-align:center; }
+	.media .devnote { margin-top:24px; border:1px dashed #b8a000; color:#e8d870; border-radius:10px; padding:12px 16px; font-size:.9rem; }
+	.media .note { color:var(--muted); font-size:.85rem; margin-top:28px; }
+	@media (max-width:640px) { .media .card.wide { grid-column:auto; } }
 </style>

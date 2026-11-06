@@ -1,68 +1,71 @@
 ---
 import Site from '../layouts/Site.astro';
 import { site } from '../data/site';
-const appStore = site.appStore;
-const features = [
-	{ title: 'Pick the art', text: 'A growing library of animations, real-time shaders and online videos, or bring your own media.', img: '/img/mac-slide1.png' },
-	{ title: 'Precision alignment', text: 'Drag the four corners to fit walls, windows and objects exactly. Use as many grids as you need.', img: '/img/mac-slide2.png' },
-	{ title: 'Different art in every shape', text: 'Additive and subtractive masks control exactly where visuals appear.', img: '/img/mac-slide3.png' },
-	{ title: 'Warp it, tune it', text: 'Paint organic warps onto your art, then dial in color, speed and more.', img: '/img/mac-slide4.png' },
-	{ title: 'Save it, share it, reuse it', text: 'Keep every setup by name and move projects between devices.', img: '/img/mac-slide5.png' },
+
+// The App Store slides already carry their own headlines, so the page adds just one above them.
+const slides = [
+	{ src: '/img/mac-slide1.png', alt: 'Pick the art: a library of animations, real-time shaders and online media' },
+	{ src: '/img/mac-slide2.png', alt: 'Precision alignment: drag the corners to fit walls, windows and objects' },
+	{ src: '/img/mac-slide3.png', alt: 'Different art in every shape: additive and subtractive masks' },
+	{ src: '/img/mac-slide4.png', alt: 'Warp it, tune it: paint organic warps, then adjust color and speed' },
+	{ src: '/img/mac-slide5.png', alt: 'Save it, share it, reuse it: keep every project by name' },
 ];
 ---
 <Site title="Illusive Lightworks | ILW Light Mapper" description="ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac. Align video to any surface, mask it, warp it and cast it.">
 	<section class="hero">
-		<img class="icon" src="/img/app-icon.png" alt="ILW Light Mapper app icon" width="120" height="120" />
+		<img class="icon" src="/img/app-icon.png" alt="ILW Light Mapper app icon" width="96" height="96" />
 		<h1>Pick the art.<br />Light up the room.</h1>
-		<p>ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac. Fit video to walls, windows and objects, mask it, warp it and cast it to a projector.</p>
+		<p>ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac.</p>
 		<div class="buttons">
-			<a class="cta" href={appStore}>Download on the App Store</a>
+			<a class="cta" href={site.appStore}>Download on the App Store</a>
 			<a class="ghost" href="/docs/">Read the guide</a>
 		</div>
-		<img class="shot" src="/img/mac-slide2.png" alt="Corner calibration in ILW Light Mapper on a Mac" />
 	</section>
 
-	<section class="features">
-		{features.map((f, i) => (
-			<article class={i % 2 ? 'row flip' : 'row'}>
-				<div class="copy"><h2>{f.title}</h2><p>{f.text}</p></div>
-				<img src={f.img} alt={f.title} loading="lazy" />
-			</article>
-		))}
+	<section class="marquee" aria-label="ILW Light Mapper screenshots">
+		<div class="track">
+			{slides.map((s) => <img src={s.src} alt={s.alt} width="1400" height="875" />)}
+			{slides.map((s) => <img src={s.src} alt="" aria-hidden="true" width="1400" height="875" loading="lazy" />)}
+		</div>
 	</section>
 
-	<section class="docs-cta">
-		<h2>See it in action</h2>
-		<p>Short clips of real surfaces, real art and the app in use.</p>
-		<a class="cta" href="/watch/">Watch</a>
+	<section class="more">
+		<a class="tile" href="/docs/">
+			<h2>Documentation</h2>
+			<p>Two steps from a blank project to art on your wall.</p>
+		</a>
+		<a class="tile" href="/media/">
+			<h2>Media</h2>
+			<p>Clips of real surfaces, real art and the app in use.</p>
+		</a>
 	</section>
-
-	<section class="docs-cta">
-		<h2>Every tool, explained</h2>
-		<p>Step-by-step guides for every screen and control, including the long-press tricks.</p>
-		<a class="cta" href="/docs/">Open the documentation</a>
-	</section>
-
 </Site>
 
 <style is:global>
-	.hero { text-align:center; padding:48px 24px 24px; max-width:1000px; margin:0 auto; }
-	.hero .icon { border-radius:26px; }
+	.hero { text-align:center; padding:40px 24px 28px; max-width:900px; margin:0 auto; }
+	.hero .icon { border-radius:22px; }
 	.hero h1 { font-size:clamp(2.4rem, 6vw, 4.2rem); line-height:1.05; margin:.4em 0 .3em; }
-	.hero p { max-width:640px; margin:0 auto 24px; color:var(--muted); font-size:1.1rem; }
+	.hero p { max-width:560px; margin:0 auto 24px; color:var(--muted); font-size:1.1rem; }
 	.buttons { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-	.shot { width:100%; max-width:900px; margin-top:36px; border-radius:16px; }
-	.features { max-width:1100px; margin:40px auto; padding:0 24px; display:grid; gap:56px; }
-	.row { display:grid; grid-template-columns: 1fr 1.4fr; gap:32px; align-items:center; }
-	.row.flip { grid-template-columns: 1.4fr 1fr; }
-	.row.flip .copy { order:2; }
-	.row img { width:100%; border-radius:14px; border:1px solid var(--line); }
-	.row h2 { font-size:1.8rem; margin:0 0 .3em; }
-	.row p { color:var(--muted); font-size:1.05rem; }
-	.docs-cta { text-align:center; padding:56px 24px; background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-	.docs-cta p { color:var(--muted); }
-	@media (max-width: 760px) {
-		.row, .row.flip { grid-template-columns: 1fr; }
-		.row.flip .copy { order:0; }
-		}
+
+	/* Slides drift sideways forever. The set is drawn twice so the loop is seamless. */
+	.marquee { overflow:hidden; padding:20px 0 36px;
+		-webkit-mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+		mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
+	.marquee .track { display:flex; width:max-content; animation:drift 60s linear infinite; }
+	.marquee:hover .track, .marquee:focus-within .track { animation-play-state:paused; }
+	.marquee img { height:clamp(240px, 38vw, 460px); width:auto; flex:none; margin-right:22px; border-radius:16px; border:1px solid var(--line); }
+	@keyframes drift { to { transform:translateX(-50%); } }
+	@media (prefers-reduced-motion: reduce) {
+		.marquee { overflow-x:auto; -webkit-mask-image:none; mask-image:none; }
+		.marquee .track { animation:none; }
+		.marquee img[aria-hidden="true"] { display:none; }
+	}
+
+	.more { max-width:1100px; margin:0 auto; padding:8px 24px 40px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+	.tile { display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px 24px; color:var(--text); text-decoration:none; }
+	.tile:hover { border-color:var(--accent); }
+	.tile h2 { margin:0 0 .25em; font-size:1.4rem; }
+	.tile p { margin:0; color:var(--muted); }
+	@media (max-width:640px) { .more { grid-template-columns:1fr; } }
 </style>
