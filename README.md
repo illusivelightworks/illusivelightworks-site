@@ -29,7 +29,9 @@ Save a PNG (or JPG/WebP) into `public/img/docs/` using the file name listed in `
 
 ## Add videos to the Watch page
 
-Open `src/data/videos.ts` and add a line with a TikTok, Instagram or YouTube link and a title. The page works out the platform itself. Videos only load when someone presses play.
+The page shows your YouTube channel's latest **Shorts** (12) and **videos** (up to 6) by itself. They are read from YouTube when the site is built, and GitHub rebuilds the site every morning, so new uploads appear without any work. The channel is set in `src/data/site.ts` (`youtubeHandle`). A saved copy in `src/data/youtube-cache.json` is used if YouTube can't be reached during a build.
+
+To pin hand-picked clips from any platform (TikTok, Instagram reel, YouTube) at the top under "Featured", add a line to `src/data/videos.ts`. Videos only load when someone presses play.
 
 ## Edit the docs
 

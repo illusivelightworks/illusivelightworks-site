@@ -3,20 +3,23 @@ import Site from '../layouts/Site.astro';
 import { site } from '../data/site';
 import { videos } from '../data/videos';
 import { parseVideo } from '../lib/video';
+import { getChannel, cleanTitle } from '../lib/youtube';
 
-const items = videos.map(parseVideo).filter((v): v is NonNullable<typeof v> => v !== null);
-const bad = videos.length - items.length;
-const platforms = [...new Set(items.map((i) => i.platform))];
+// Hand-picked clips (any platform) from src/data/videos.ts, shown first.
+const featured = videos.map(parseVideo).filter((v): v is NonNullable<typeof v> => v !== null);
+const badLinks = videos.length - featured.length;
+
+// Latest Shorts and videos from the YouTube channel, read when the site is built (rebuilt daily).
+const yt = site.youtubeHandle ? await getChannel(site.youtubeHandle) : { shorts: [], videos: [] };
+const shorts = yt.shorts.slice(0, 12);
+const longVideos = yt.videos.slice(0, 6);
+
 const follow = [
+	['YouTube', site.social.youtube],
 	['TikTok', site.social.tiktok],
 	['Instagram', site.social.instagram],
-	['YouTube', site.social.youtube],
 ].filter(([, href]) => href);
 const dev = import.meta.env.DEV;
-// The TikTok profile feed updates itself: it always shows whatever is on the account.
-const tiktokHandle = site.social.tiktok.match(/@([A-Za-z0-9._]+)/)?.[1] ?? '';
-// The channel's "all uploads" playlist is the channel ID with UC swapped for UU.
-const ytUploads = /^UC[\w-]{10,}$/.test(site.youtubeChannelId) ? 'UU' + site.youtubeChannelId.slice(2) : '';
 ---
 <Site title="Watch | Illusive Lightworks" description="Projection mapping clips, tutorials and visuals made with ILW Light Mapper.">
 	<section class="media">
@@ -28,18 +31,11 @@ const ytUploads = /^UC[\w-]{10,}$/.test(site.youtubeChannelId) ? 'UU' + site.you
 			<a class="cta" href={site.appStore}>Get the app</a>
 		</div>
 
-		{platforms.length > 1 && (
-			<div class="filters" role="tablist" aria-label="Filter by platform">
-				<button class="chip on" data-filter="all">All</button>
-				{platforms.map((p) => <button class="chip" data-filter={p}>{p === 'tiktok' ? 'TikTok' : p === 'instagram' ? 'Instagram' : 'YouTube'}</button>)}
-			</div>
-		)}
-
-		{items.length > 0 && <h2 class="sect">Featured</h2>}
-		{items.length > 0 && (
+		{featured.length > 0 && <h2 class="sect">Featured</h2>}
+		{featured.length > 0 && (
 			<div class="grid">
-				{items.map((v) => (
-					<figure class={`card ${v.portrait ? 'portrait' : 'wide'}`} data-platform={v.platform}>
+				{featured.map((v) => (
+					<figure class={`card ${v.portrait ? 'portrait' : 'wide'}`}>
 						<button class="player" data-embed={v.embed} aria-label={`Play: ${v.title ?? v.label + ' video'}`} style={v.thumb ? `background-image:url('${v.thumb}')` : ''}>
 							<span class="badge">{v.label}</span>
 							<span class="play" aria-hidden="true">▶</span>
@@ -50,51 +46,64 @@ const ytUploads = /^UC[\w-]{10,}$/.test(site.youtubeChannelId) ? 'UU' + site.you
 			</div>
 		)}
 
-		{tiktokHandle && (
-			<section class="feed" id="tiktok">
-				<h2 class="sect">Latest on TikTok</h2>
-				<div class="feed-box" id="tiktok-box">
-					<button type="button" class="feed-load" data-handle={tiktokHandle}>
-						<span class="badge">TikTok</span>
+		{shorts.length > 0 && <h2 class="sect">Shorts</h2>}
+		{shorts.length > 0 && (
+			<div class="shorts">
+				{shorts.map((s) => (
+					<button type="button" class="tile-v" data-id={s.id} data-kind="short" aria-label={`Play: ${cleanTitle(s.title)}`}>
+						<img src={`https://i.ytimg.com/vi/${s.id}/oar2.jpg`} data-fallback={`https://i.ytimg.com/vi/${s.id}/hq720.jpg`} alt="" loading="lazy" />
 						<span class="play" aria-hidden="true">▶</span>
-						<span class="cap">Show the latest videos from @{tiktokHandle}</span>
+						<span class="cap">{cleanTitle(s.title)}</span>
 					</button>
-				</div>
-			</section>
+				))}
+			</div>
 		)}
 
-		{ytUploads && (
-			<section class="feed" id="youtube">
-				<h2 class="sect">Latest on YouTube</h2>
-				<div class="feed-box yt">
-					<button type="button" class="feed-load" data-yt={ytUploads}>
-						<span class="badge">YouTube</span>
+		{longVideos.length > 0 && <h2 class="sect">Tutorials and longer videos</h2>}
+		{longVideos.length > 0 && (
+			<div class="longs">
+				{longVideos.map((v) => (
+					<button type="button" class="tile-h" data-id={v.id} data-kind="video" aria-label={`Play: ${cleanTitle(v.title)}`}>
+						<img src={`https://i.ytimg.com/vi/${v.id}/hq720.jpg`} alt="" loading="lazy" />
 						<span class="play" aria-hidden="true">▶</span>
-						<span class="cap">Play the latest videos</span>
+						<span class="cap">{cleanTitle(v.title)}</span>
 					</button>
-				</div>
-			</section>
+				))}
+			</div>
 		)}
 
-		{follow.some(([n]) => n === 'Instagram') && (
-			<p class="ig">Reels and posts are on <a href={site.social.instagram}>Instagram</a> too.</p>
+		{shorts.length + longVideos.length === 0 && featured.length === 0 && (
+			<div class="empty">
+				<p>Videos are on the way.</p>
+				{follow.length > 0 && <p>You can find them on {follow.map(([n, h], i) => <><a href={h}>{n}</a>{i < follow.length - 1 ? ', ' : ''}</>)}.</p>}
+			</div>
+		)}
+
+		{site.social.youtube && (shorts.length + longVideos.length > 0) && (
+			<p class="more-link"><a class="ghost" href={site.social.youtube}>See everything on YouTube</a></p>
 		)}
 
 		{dev && (
 			<aside class="devnote">
 				<strong>Only you see this, in the local preview.</strong>
-				The TikTok feed shows your account's latest videos automatically{ytUploads ? ', and so does YouTube' : ''}. Hand-picked clips go in <code>src/data/videos.ts</code> under "Featured".
-				{!ytUploads && ' YouTube feed is off: set youtubeChannelId in src/data/site.ts.'}
-				{bad > 0 && ` ${bad} link${bad > 1 ? 's' : ''} could not be read (check the URL).`}
+				Shorts and videos come from <code>{site.youtubeHandle}</code> when the site is built
+				({shorts.length} Shorts, {longVideos.length} videos{yt.fetchedAt ? `, saved ${yt.fetchedAt.slice(0, 10)}` : ''}).
+				Hand-picked clips go in <code>src/data/videos.ts</code> under "Featured".
+				{badLinks > 0 && ` ${badLinks} link${badLinks > 1 ? 's' : ''} in videos.ts could not be read (check the URL).`}
 			</aside>
 		)}
 
-		<p class="note">Nothing loads from TikTok, Instagram or YouTube until you press play.</p>
+		<p class="note">Nothing loads from YouTube's player until you press play.</p>
 	</section>
+
+	<dialog id="player" aria-label="Video player">
+		<button type="button" class="pl-close" aria-label="Close">×</button>
+		<div class="pl-frame"></div>
+	</dialog>
 </Site>
 
 <script>
-	// Click-to-load: nothing from the video platforms is requested until someone presses play.
+	// Featured clips play in place.
 	document.querySelectorAll<HTMLButtonElement>('.player').forEach((btn) => {
 		btn.addEventListener('click', () => {
 			const src = btn.dataset.embed;
@@ -103,89 +112,92 @@ const ytUploads = /^UC[\w-]{10,}$/.test(site.youtubeChannelId) ? 'UU' + site.you
 			frame.src = src;
 			frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
 			frame.allowFullscreen = true;
-			frame.loading = 'lazy';
 			frame.title = btn.getAttribute('aria-label') ?? 'Video';
 			btn.replaceWith(frame);
 		});
 	});
-	// Profile feeds: TikTok's creator embed and YouTube's uploads playlist. Both load only on click.
-	document.querySelectorAll<HTMLButtonElement>('.feed-load').forEach((btn) => {
-		btn.addEventListener('click', () => {
-			const box = btn.parentElement as HTMLElement;
-			if (btn.dataset.yt) {
-				const f = document.createElement('iframe');
-				f.src = `https://www.youtube-nocookie.com/embed/videoseries?list=${btn.dataset.yt}&rel=0`;
-				f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-				f.allowFullscreen = true;
-				f.title = 'Latest YouTube videos';
-				btn.replaceWith(f);
-				return;
-			}
-			const handle = btn.dataset.handle ?? '';
-			const bq = document.createElement('blockquote');
-			bq.className = 'tiktok-embed';
-			bq.setAttribute('cite', `https://www.tiktok.com/@${handle}`);
-			bq.setAttribute('data-unique-id', handle);
-			bq.setAttribute('data-embed-type', 'creator');
-			bq.style.cssText = 'max-width:780px; min-width:288px;';
-			bq.innerHTML = `<section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@${handle}">@${handle}</a></section>`;
-			btn.replaceWith(bq);
-			const s = document.createElement('script');
-			s.async = true;
-			s.src = 'https://www.tiktok.com/embed.js';
-			box.appendChild(s);
-			// If TikTok's player has not appeared after a few seconds (blocked, offline, or an ad blocker), say so and link out.
-			setTimeout(() => {
-				if (box.querySelector('iframe')) return;
-				const fallback = document.createElement('p');
-				fallback.className = 'feed-fallback';
-				fallback.innerHTML = `The TikTok videos could not be loaded here. <a class="cta" href="https://www.tiktok.com/@${handle}">Watch on TikTok</a>`;
-				box.appendChild(fallback);
-			}, 7000);
+
+	// If a Short's vertical thumbnail is missing, fall back to the standard one (cropped by CSS).
+	document.querySelectorAll<HTMLImageElement>('img[data-fallback]').forEach((img) => {
+		img.addEventListener('error', () => { if (img.dataset.fallback && img.src !== img.dataset.fallback) img.src = img.dataset.fallback; }, { once: true });
+	});
+
+	// YouTube tiles open in a pop-up player. The frame is created on click and removed on close, which also stops playback.
+	const dlg = document.getElementById('player') as HTMLDialogElement;
+	const holder = dlg.querySelector('.pl-frame') as HTMLElement;
+	document.querySelectorAll<HTMLButtonElement>('.tile-v, .tile-h').forEach((tile) => {
+		tile.addEventListener('click', () => {
+			const f = document.createElement('iframe');
+			f.src = `https://www.youtube-nocookie.com/embed/${tile.dataset.id}?autoplay=1&rel=0&playsinline=1`;
+			f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+			f.allowFullscreen = true;
+			f.title = tile.getAttribute('aria-label') ?? 'Video';
+			holder.className = 'pl-frame ' + (tile.dataset.kind === 'short' ? 'vert' : 'wide');
+			holder.replaceChildren(f);
+			dlg.showModal();
 		});
 	});
-	// Platform filter.
-	const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
-	chips.forEach((chip) => chip.addEventListener('click', () => {
-		chips.forEach((c) => c.classList.toggle('on', c === chip));
-		const f = chip.dataset.filter;
-		document.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-			card.hidden = !(f === 'all' || card.dataset.platform === f);
-		});
-	}));
+	dlg.querySelector('.pl-close')!.addEventListener('click', () => dlg.close());
+	dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+	dlg.addEventListener('close', () => holder.replaceChildren());
 </script>
 
 <style is:global>
 	.media { max-width:1100px; margin:0 auto; padding:24px 24px 56px; }
 	.media h1 { font-size:clamp(2.2rem,5vw,3.4rem); margin:.2em 0 .1em; }
 	.media .lede { color:var(--muted); font-size:1.1rem; margin:0 0 22px; }
-	.media .follow { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
-	.media .filters { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
-	.media .chip { background:transparent; color:var(--text); border:1px solid var(--line); border-radius:999px; padding:7px 16px; font:inherit; cursor:pointer; }
-	.media .chip.on { background:var(--accent); border-color:var(--accent); color:#032327; font-weight:700; }
+	.media .follow { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:8px; }
+	.media .sect { font-size:1.4rem; margin:34px 0 14px; }
+
+	/* Featured (hand-picked) */
 	.media .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; align-items:start; }
 	.media .card { margin:0; background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
-	.media .card[hidden] { display:none; }
 	.media .card.wide { grid-column:span 2; }
 	.media .card.wide .player, .media .card.wide iframe { aspect-ratio:16/9; }
 	.media .card.portrait .player, .media .card.portrait iframe { aspect-ratio:9/16; }
-	.media .player, .media iframe { display:block; width:100%; border:0; }
-	.media .player { position:relative; cursor:pointer; color:#fff; text-align:left; padding:0; border:0;
+	.media .player, .media .card iframe { display:block; width:100%; border:0; }
+	.media .player { position:relative; cursor:pointer; color:#fff; text-align:left; padding:0;
 		background:radial-gradient(circle at 50% 35%, #0f5a61 0%, #082b30 70%) center/cover no-repeat; }
-	.media .player:hover .play { transform:scale(1.08); }
+
+	/* Shorts: vertical thumbnails, six across on desktop */
+	.media .shorts { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; }
+	.media .longs { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+	.media .tile-v, .media .tile-h { position:relative; display:block; width:100%; padding:0; border:1px solid var(--line); border-radius:12px; overflow:hidden;
+		background:#082b30; cursor:pointer; color:#fff; text-align:left; line-height:0; }
+	.media .tile-v { aspect-ratio:9/16; }
+	.media .tile-h { aspect-ratio:16/9; }
+	.media .tile-v img, .media .tile-h img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .25s; }
+	.media .tile-v:hover img, .media .tile-h:hover img { transform:scale(1.04); }
+	.media .tile-v:hover, .media .tile-h:hover { border-color:var(--accent); }
+	.media .tile-v:focus-visible, .media .tile-h:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+
 	.media .badge { position:absolute; top:10px; left:10px; font:600 .72rem system-ui; letter-spacing:.1em; text-transform:uppercase; background:rgba(3,35,39,.75); padding:4px 9px; border-radius:6px; }
-	.media .play { position:absolute; inset:0; margin:auto; width:64px; height:64px; border-radius:50%; background:rgba(0,229,218,.9); color:#032327; display:grid; place-items:center; font-size:1.4rem; padding-left:4px; transition:transform .15s; }
-	.media .cap { position:absolute; left:0; right:0; bottom:0; padding:28px 14px 12px; font-weight:600; background:linear-gradient(transparent, rgba(2,12,14,.9)); }
-	.media .empty { border:1px dashed var(--line); border-radius:14px; padding:28px; color:var(--muted); text-align:center; }
-	.media .sect { font-size:1.4rem; margin:34px 0 14px; }
-	.media .feed-box { max-width:780px; }
-	.media .feed-box.yt iframe { aspect-ratio:16/9; width:100%; border:0; border-radius:14px; }
-	.media .feed-load { position:relative; display:block; width:100%; min-height:220px; border:1px solid var(--line); border-radius:14px; cursor:pointer; color:#fff; text-align:left; padding:0;
-		background:radial-gradient(circle at 50% 35%, #0f5a61 0%, #082b30 70%); }
-	.media .feed-load:hover .play { transform:scale(1.08); }
-	.media .feed-fallback { color:var(--muted); margin:14px 0 0; display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
-	.media .ig { margin-top:26px; color:var(--muted); }
+	.media .play { position:absolute; inset:0; margin:auto; width:52px; height:52px; border-radius:50%; background:rgba(0,229,218,.9); color:#032327; display:grid; place-items:center; font-size:1.15rem; padding-left:3px; line-height:1; transition:transform .15s; }
+	.media .tile-h .play { width:60px; height:60px; }
+	.media .tile-v:hover .play, .media .tile-h:hover .play, .media .player:hover .play { transform:scale(1.1); }
+	.media .cap { position:absolute; left:0; right:0; bottom:0; padding:30px 10px 9px; font:600 .8rem/1.25 system-ui; background:linear-gradient(transparent, rgba(2,12,14,.92));
+		display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+	.media .tile-h .cap { font-size:.95rem; padding:34px 14px 12px; }
+
+	.media .more-link { margin-top:26px; }
+	.media .empty { border:1px dashed var(--line); border-radius:14px; padding:28px; color:var(--muted); text-align:center; margin-top:28px; }
 	.media .devnote { margin-top:24px; border:1px dashed #b8a000; color:#e8d870; border-radius:10px; padding:12px 16px; font-size:.9rem; }
 	.media .note { color:var(--muted); font-size:.85rem; margin-top:28px; }
-	@media (max-width:640px) { .media .card.wide { grid-column:auto; } }
+
+	/* Pop-up player */
+	#player { border:0; padding:0; background:transparent; width:100vw; height:100vh; max-width:100vw; max-height:100vh; }
+	#player::backdrop { background:rgba(2,10,12,.92); }
+	#player[open] { display:flex; align-items:center; justify-content:center; }
+	#player .pl-frame iframe { width:100%; height:100%; border:0; border-radius:12px; background:#000; }
+	#player .pl-frame.wide { width:min(92vw, 1100px); aspect-ratio:16/9; }
+	#player .pl-frame.vert { height:min(88vh, 900px); aspect-ratio:9/16; max-width:92vw; }
+	#player .pl-close { position:fixed; top:14px; right:18px; font-size:2.2rem; line-height:1; background:rgba(13,42,47,.85); color:#fff; border:1px solid var(--line); border-radius:999px; width:46px; height:46px; cursor:pointer; z-index:2; }
+	#player .pl-close:hover { border-color:var(--accent); }
+
+	@media (max-width:640px) {
+		.media .card.wide { grid-column:auto; }
+		.media .shorts { grid-template-columns:repeat(3,1fr); gap:8px; }
+		.media .tile-v .play { width:38px; height:38px; font-size:.9rem; }
+		.media .tile-v .cap { font-size:.68rem; padding:22px 6px 6px; }
+	}
 </style>
