@@ -30,7 +30,7 @@ Capture on Mac at 2560x1600 if possible, no device frame, dark mode doesn't matt
 | `playback-timeline.png` | Bottom bar, timeline view | Play/Pause, slider, link toggle, Modify All | step-2/playback |
 | `playback-speed.png` | Bottom bar after tapping the lightning bolt | Speed slider | step-2/playback |
 | `playback-link.png` | Two grids with the same video | Link toggle with "x2" | step-2/playback |
-| `saved-setups.png` | Saved Setups | Selected project, all buttons incl. import icon | projects |
+| `saved-projects.png` | Saved Projects (called Saved Setups in 1.6.0) | Selected project, all buttons incl. import icon | projects |
 | `cast-picker.png` | Cast button on + device list | | casting |
 | `settings.png` | Settings screen | All options | settings |
 | `about.png` | About screen | | main-menu |
