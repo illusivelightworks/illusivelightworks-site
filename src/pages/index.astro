@@ -2,13 +2,13 @@
 import Site from '../layouts/Site.astro';
 import { site } from '../data/site';
 
-// The App Store slides already carry their own headlines, so the page adds just one above them.
+// The App Store (iPhone) slides already carry their own headlines, so the page adds just one above them.
 const slides = [
-	{ src: '/img/mac-slide1.png', full: '/img/full/mac-slide1.jpg', alt: 'Pick the art: a library of animations, real-time shaders and online media' },
-	{ src: '/img/mac-slide2.png', full: '/img/full/mac-slide2.jpg', alt: 'Precision alignment: drag the corners to fit walls, windows and objects' },
-	{ src: '/img/mac-slide3.png', full: '/img/full/mac-slide3.jpg', alt: 'Different art in every shape: additive and subtractive masks' },
-	{ src: '/img/mac-slide4.png', full: '/img/full/mac-slide4.jpg', alt: 'Warp it, tune it: paint organic warps, then adjust color and speed' },
-	{ src: '/img/mac-slide5.png', full: '/img/full/mac-slide5.jpg', alt: 'Save it, share it, reuse it: keep every project by name' },
+	{ src: '/img/iphone-slide1.jpg', full: '/img/full/iphone-slide1.jpg', alt: 'Pick the art: a library of animations, real-time shaders and online media' },
+	{ src: '/img/iphone-slide2.jpg', full: '/img/full/iphone-slide2.jpg', alt: 'Precision alignment: drag the corners to fit walls, windows and objects, with simple touch controls' },
+	{ src: '/img/iphone-slide3.jpg', full: '/img/full/iphone-slide3.jpg', alt: 'Different art in every shape: additive and subtractive masks' },
+	{ src: '/img/iphone-slide4.jpg', full: '/img/full/iphone-slide4.jpg', alt: 'Warp it, tune it: paint organic warps, then adjust color and speed' },
+	{ src: '/img/iphone-slide5.jpg', full: '/img/full/iphone-slide5.jpg', alt: 'Save it, share it, reuse it: keep every project by name' },
 ];
 ---
 <Site title="Illusive Lightworks | ILW Light Mapper" description="ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac. Align video to any surface, mask it, warp it and cast it.">
@@ -22,18 +22,29 @@ const slides = [
 		</div>
 	</section>
 
-	<section class="marquee" aria-label="ILW Light Mapper screenshots">
-		<div class="track">
-			{slides.map((s, i) => (
-				<button type="button" class="slide" data-index={i} aria-label={`View full size: ${s.alt}`}>
-					<img src={s.src} alt="" width="1400" height="875" />
-				</button>
-			))}
-			{slides.map((s, i) => (
-				<button type="button" class="slide" data-index={i} tabindex="-1" aria-hidden="true">
-					<img src={s.src} alt="" width="1400" height="875" loading="lazy" />
-				</button>
-			))}
+	<section class="hc" role="region" aria-roledescription="carousel" aria-label="ILW Light Mapper screenshots">
+		<div class="hc-stage">
+			<div class="hc-viewport">
+				<div class="hc-track" aria-live="off">
+					{slides.map((s, i) => (
+						<button type="button" class={i === 0 ? 'hc-slide on' : 'hc-slide'} data-index={i} role="group" aria-roledescription="slide"
+							aria-label={`${i + 1} of ${slides.length}: ${s.alt}. Open full size`} aria-hidden={i === 0 ? 'false' : 'true'} tabindex={i === 0 ? 0 : -1}>
+							<img src={s.src} alt="" width="1600" height="736" loading={i === 0 ? 'eager' : 'lazy'} />
+						</button>
+					))}
+					<button type="button" class="hc-slide hc-clone" data-index="0" aria-hidden="true" tabindex="-1">
+						<img src={slides[0].src} alt="" width="1600" height="736" loading="lazy" />
+					</button>
+				</div>
+			</div>
+			<button type="button" class="hc-btn hc-prev" aria-label="Previous screenshot">‹</button>
+			<button type="button" class="hc-btn hc-next" aria-label="Next screenshot">›</button>
+		</div>
+		<div class="hc-bar">
+			<div class="hc-dots">
+				{slides.map((_, i) => <button type="button" class={i === 0 ? 'dot on' : 'dot'} data-go={i} aria-label={`Show screenshot ${i + 1}`}></button>)}
+			</div>
+			<button type="button" class="hc-pause" aria-label="Pause automatic slideshow" data-state="playing">❚❚</button>
 		</div>
 	</section>
 
@@ -57,33 +68,116 @@ const slides = [
 </Site>
 
 <script define:vars={{ slides }}>
+	const INTERVAL = 6000; // time each screenshot stays, in milliseconds
+
+	// ---- Hero carousel ----
+	const hc = document.querySelector('.hc');
+	const track = hc.querySelector('.hc-track');
+	const items = [...hc.querySelectorAll('.hc-slide:not(.hc-clone)')];
+	const N = items.length;
+	const dots = [...hc.querySelectorAll('.dot')];
+	const pauseBtn = hc.querySelector('.hc-pause');
 	const dlg = document.getElementById('lightbox');
-	const big = document.getElementById('lb-img');
-	let current = 0;
-	function show(i) {
-		current = (i + slides.length) % slides.length;
-		big.src = slides[current].full;
-		big.alt = slides[current].alt;
+	const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	let cur = 0;                       // which screenshot is showing (0 .. N-1)
+	let pos = 0;                       // where the track is (0 .. N; N is the copy of the first one, used to wrap forward smoothly)
+	let timer = null;
+	let userPaused = reduceMotion;     // visitors who ask for less motion never get autoplay
+	let hovering = false;
+	let focusing = false;
+
+	function place(p, animate) {
+		track.style.transition = animate && !reduceMotion ? '' : 'none';
+		track.style.transform = `translateX(${-p * 100}%)`;
+		pos = p;
+		if (!animate || reduceMotion) { void track.offsetWidth; track.style.transition = ''; }
 	}
-	document.querySelectorAll('.marquee .slide').forEach((b) => {
-		b.addEventListener('click', () => { show(Number(b.dataset.index)); dlg.showModal(); });
+	function mark() {
+		items.forEach((s, k) => {
+			const on = k === cur;
+			s.classList.toggle('on', on);
+			s.setAttribute('aria-hidden', on ? 'false' : 'true');
+			s.tabIndex = on ? 0 : -1;
+		});
+		dots.forEach((d, k) => d.classList.toggle('on', k === cur));
+	}
+	// Slide to screenshot i. Going forward past the last one keeps sliding forward into a copy of the first, then snaps back unseen.
+	function go(i, how) {
+		const target = ((i % N) + N) % N;
+		if (how === 'jump') { cur = target; place(target, false); mark(); return; }
+		if (how === 'next' && cur === N - 1) { cur = 0; place(N, true); mark(); return; }
+		if (how === 'prev' && cur === 0) { place(N, false); cur = N - 1; place(N - 1, true); mark(); return; }
+		cur = target; place(target, true); mark();
+	}
+	track.addEventListener('transitionend', (e) => { if (e.target === track && pos === N) place(0, false); });
+	function running() { return !userPaused && !hovering && !focusing && !document.hidden && !dlg.open; }
+	function schedule() {
+		clearTimeout(timer);
+		if (running()) timer = setTimeout(() => { go(cur + 1, 'next'); schedule(); }, INTERVAL);
+	}
+	function manual(i, how) { go(i, how); schedule(); }
+
+	hc.querySelector('.hc-prev').addEventListener('click', () => manual(cur - 1, 'prev'));
+	hc.querySelector('.hc-next').addEventListener('click', () => manual(cur + 1, 'next'));
+	dots.forEach((d) => d.addEventListener('click', () => manual(Number(d.dataset.go), 'dot')));
+
+	pauseBtn.addEventListener('click', () => {
+		userPaused = !userPaused;
+		pauseBtn.textContent = userPaused ? '▶' : '❚❚';
+		pauseBtn.dataset.state = userPaused ? 'paused' : 'playing';
+		pauseBtn.setAttribute('aria-label', userPaused ? 'Play automatic slideshow' : 'Pause automatic slideshow');
+		schedule();
 	});
-	dlg.querySelector('.lb-close').addEventListener('click', () => dlg.close());
-	dlg.querySelector('.lb-prev').addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
-	dlg.querySelector('.lb-next').addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
-	// Click the dark area (not the picture or arrows) to close.
-	dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
-	dlg.addEventListener('keydown', (e) => {
-		if (e.key === 'ArrowLeft') show(current - 1);
-		if (e.key === 'ArrowRight') show(current + 1);
+	if (userPaused) { pauseBtn.textContent = '▶'; pauseBtn.dataset.state = 'paused'; pauseBtn.setAttribute('aria-label', 'Play automatic slideshow'); }
+
+	// Stand still while the visitor is looking at it, tabbing through it, or has the tab in the background.
+	hc.addEventListener('mouseenter', () => { hovering = true; schedule(); });
+	hc.addEventListener('mouseleave', () => { hovering = false; schedule(); });
+	hc.addEventListener('focusin', (e) => { focusing = e.target.matches(':focus-visible'); schedule(); });
+	hc.addEventListener('focusout', () => { focusing = false; schedule(); });
+	document.addEventListener('visibilitychange', schedule);
+
+	// Left / right arrow keys and swipe.
+	hc.addEventListener('keydown', (e) => {
+		if (e.key === 'ArrowLeft') manual(cur - 1, 'prev');
+		if (e.key === 'ArrowRight') manual(cur + 1, 'next');
 	});
+	let startX = null;
+	hc.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+	hc.addEventListener('touchend', (e) => {
+		if (startX === null) return;
+		const dx = e.changedTouches[0].clientX - startX;
+		startX = null;
+		if (Math.abs(dx) > 40) dx < 0 ? manual(cur + 1, 'next') : manual(cur - 1, 'prev');
+	}, { passive: true });
+
+	// ---- Full-size viewer ----
+	const big = document.getElementById('lb-img');
+	let lb = 0;
+	function show(i) {
+		lb = (i + slides.length) % slides.length;
+		big.src = slides[lb].full;
+		big.alt = slides[lb].alt;
+	}
 	let opener = null;
-	document.querySelectorAll('.marquee .slide').forEach((b) => b.addEventListener('click', () => { opener = b; }));
+	items.forEach((b) => b.addEventListener('click', () => { opener = b; show(Number(b.dataset.index)); dlg.showModal(); schedule(); }));
+	dlg.querySelector('.lb-close').addEventListener('click', () => dlg.close());
+	dlg.querySelector('.lb-prev').addEventListener('click', (e) => { e.stopPropagation(); show(lb - 1); });
+	dlg.querySelector('.lb-next').addEventListener('click', (e) => { e.stopPropagation(); show(lb + 1); });
+	dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });   // click the dark area to close
+	dlg.addEventListener('keydown', (e) => {
+		if (e.key === 'ArrowLeft') show(lb - 1);
+		if (e.key === 'ArrowRight') show(lb + 1);
+	});
 	dlg.addEventListener('close', () => {
 		big.removeAttribute('src');
-		// Closing hands focus back to the slide that was clicked; let go of it so the strip keeps scrolling.
+		go(lb, 'jump');                          // the carousel shows whichever screenshot the visitor ended on
 		if (opener) { opener.blur(); opener = null; }
+		focusing = false;
+		schedule();                              // and starts advancing again
 	});
+
+	schedule();
 </script>
 
 <style is:global>
@@ -93,17 +187,26 @@ const slides = [
 	.hero p { max-width:560px; margin:0 auto 24px; color:var(--muted); font-size:1.1rem; }
 	.buttons { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
 
-	/* Slides drift sideways forever. The set is drawn twice so the loop is seamless. */
-	.marquee { overflow:hidden; padding:20px 0 36px;
-		-webkit-mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-		mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
-	.marquee .track { display:flex; width:max-content; animation:drift 60s linear infinite; }
-	/* Pause under the mouse, or while a slide is keyboard-focused (not just clicked) so it does not stay stuck after the viewer closes. */
-	.marquee:hover .track, .marquee:has(.slide:focus-visible) .track { animation-play-state:paused; }
-	.marquee .slide { flex:none; margin:0 22px 0 0; padding:0; border:0; background:none; cursor:zoom-in; line-height:0; }
-	.marquee .slide:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:16px; }
-	.marquee .slide img { height:clamp(240px, 38vw, 460px); width:auto; display:block; border-radius:16px; border:1px solid var(--line); transition:border-color .15s; }
-	.marquee .slide:hover img { border-color:var(--accent); }
+	/* Screenshot carousel: one at a time, cross-fading, advancing by itself */
+	.hc { max-width:1040px; margin:0 auto; padding:16px 24px 36px; }
+	.hc-stage { position:relative; }
+	.hc-viewport { overflow:hidden; border-radius:16px; }
+	.hc-track { display:flex; transition:transform .6s cubic-bezier(.4,0,.2,1); will-change:transform; }
+	.hc-slide { flex:0 0 100%; min-width:0; display:block; padding:0; border:0; background:none; line-height:0; cursor:zoom-in; }
+	.hc-slide img { width:calc(100% - 20px); margin:0 auto; height:auto; display:block; border-radius:16px; border:1px solid var(--line); }
+	.hc-slide:focus-visible { outline:2px solid var(--accent); outline-offset:-4px; border-radius:16px; }
+	.hc-btn { position:absolute; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:999px; padding:0 0 4px;
+		border:1px solid var(--line); background:rgba(7,26,29,.72); color:#fff; font-size:2rem; line-height:1; cursor:pointer; opacity:.85; }
+	.hc-btn:hover { border-color:var(--accent); opacity:1; }
+	.hc-prev { left:-18px; } .hc-next { right:-18px; }
+	.hc-bar { display:flex; align-items:center; justify-content:center; gap:16px; margin-top:16px; }
+	.hc-dots { display:flex; gap:9px; }
+	.hc .dot { width:10px; height:10px; padding:0; border-radius:50%; border:1px solid var(--accent); background:transparent; cursor:pointer; }
+	.hc .dot.on { background:var(--accent); }
+	.hc-pause { width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--muted); font-size:.7rem; cursor:pointer; padding:0; }
+	.hc-pause:hover { color:#fff; border-color:var(--accent); }
+	@media (max-width:760px) { .hc { padding:12px 14px 28px; } .hc-prev { left:6px; } .hc-next { right:6px; } .hc-btn { width:38px; height:38px; font-size:1.6rem; } }
+	@media (prefers-reduced-motion: reduce) { .hc-track { transition:none; } }
 
 	/* Full-size viewer */
 	#lightbox { border:0; padding:0; background:transparent; max-width:100vw; max-height:100vh; width:100vw; height:100vh; color:#fff; }
@@ -114,12 +217,6 @@ const slides = [
 	#lightbox .lb-nav { flex:none; font-size:2.4rem; line-height:1; background:rgba(13,42,47,.7); color:#fff; border:1px solid var(--line); border-radius:999px; width:48px; height:48px; cursor:pointer; }
 	#lightbox .lb-close:hover, #lightbox .lb-nav:hover { border-color:var(--accent); }
 	@media (max-width:640px) { #lightbox .lb-nav { position:fixed; bottom:18px; } #lightbox .lb-prev { left:18px; } #lightbox .lb-next { right:18px; } #lightbox #lb-img { max-width:96vw; } }
-	@keyframes drift { to { transform:translateX(-50%); } }
-	@media (prefers-reduced-motion: reduce) {
-		.marquee { overflow-x:auto; -webkit-mask-image:none; mask-image:none; }
-		.marquee .track { animation:none; }
-		.marquee .slide[aria-hidden="true"] { display:none; }
-	}
 
 	.more { max-width:1100px; margin:0 auto; padding:8px 24px 40px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }
 	.tile { display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px 24px; color:var(--text); text-decoration:none; }
