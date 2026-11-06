@@ -7,20 +7,20 @@ A saved project can be exported as a single **`.ilwj`** file and imported on ano
 
 ## Exporting
 
-1. Open **SAVED SETUPS** and select the project.
+1. Open **SAVED PROJECTS** and select the project.
 2. Tap **EXPORT**.
 3. On iPhone and iPad, the share sheet opens: AirDrop it, save it to Files, or send it by Mail or Messages. On Mac, a save dialog opens.
 
 ## Importing
 
-Use the **import icon** on the Saved Setups screen and choose a file. Or open the file from outside the app:
+Use the **import icon** on the Saved Projects screen and choose a file. Or open the file from outside the app:
 
 - **iPhone/iPad:** tap the file in Files, Mail or AirDrop and choose Light Mapper.
 - **Mac:** double-click the file, or right-click and choose *Open With*.
 
 ## What's in the file
 
-The file is small (usually about 1 MB) because it holds the *setup*, not the videos:
+The file is small (usually about 1 MB) because it holds the *project*, not the videos:
 
 - grid alignment, size, rotation and layer order
 - color, background key, speed, audio and shader settings

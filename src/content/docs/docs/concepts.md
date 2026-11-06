@@ -1,13 +1,13 @@
 ---
-title: How it fits together
-description: Grids, projects, and which controls affect one layer versus everything.
+title: Key ideas
+description: Projects, grids, and which controls affect one layer versus everything.
 ---
 
 A little vocabulary makes everything else in the app easier to follow.
 
-## Projects (setups)
+## Projects
 
-A **project** (the app also says **setup**) is everything you've built: all your grids, masks, warp paint and settings. You save and reopen projects by name.
+A **project** is everything you've built: all your grids, masks, warp paint and settings. You save and reopen projects by name.
 
 ## Grids
 
@@ -40,14 +40,14 @@ You can swap the art on a grid without losing its alignment, masks or color sett
 
 You'll see rows of numbered grid buttons in a few places. They do different things:
 
-1. **Corner calibration:** the active grid you are aligning.
+1. **Step 1 (Align):** the active grid you are aligning.
 2. **Tool panels (Color, Background Key, Audio…):** which grid the tool edits, or *all* grids with **Modify All Grids** on.
 3. **Mask tool, "MASK GRID":** which grids the selected mask applies to. This is not the active grid.
 
-## The three stages
+## The two steps
 
 ```
-Choose artwork  →  Corner calibration  →  Final Display
+Step 1: Align  →  Step 2: Refine
 ```
 
-You can go back to calibration from Final Display with **GRID SETUP** (see the warning on that page about unsaved changes).
+**Step 1** is choosing your art and fitting it to the surface. **Step 2** is everything else: masks, warp, color, playback and saving. You can go back to Step 1 from Step 2 with **GRID SETUP**. See the [Quickstart](/docs/) and the warning there about unsaved changes.

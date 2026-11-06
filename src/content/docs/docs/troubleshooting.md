@@ -5,7 +5,7 @@ description: Fixes for the most common problems.
 
 ## My changes disappeared after tapping GRID SETUP
 
-**GRID SETUP** returns to calibration on the *last saved* version of the project, so unsaved Final Display edits are discarded. Tap **SAVE PROJECT** first.
+**GRID SETUP** returns you to Step 1 on the *last saved* version of the project, so unsaved Step 2 edits are discarded. Tap **SAVE PROJECT** first.
 
 ## A control does nothing, and I see "This control only works for Video grids" (or Shader grids)
 
@@ -13,7 +13,7 @@ You've selected a grid of the wrong kind. Video controls (timeline, play/pause, 
 
 ## I can't select a grid, it's behind another
 
-In corner calibration, turn off **Auto Grid Select** and use the numbered tiles. You can also change **Layer Order**.
+In Step 1, turn off **Auto Grid Select** and use the numbered tiles. You can also change **Layer Order**.
 
 ## Warp Paint doesn't paint
 
