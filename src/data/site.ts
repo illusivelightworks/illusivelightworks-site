@@ -6,7 +6,7 @@ export const site = {
 	youtubeHandle: '@illusivelightworks',
 	social: {
 		tiktok: 'https://www.tiktok.com/@illusivelightworks',
-		instagram: '',
+		instagram: 'https://www.instagram.com/illusivelightworks/',
 		youtube: 'https://www.youtube.com/@illusivelightworks',
 		discord: '',
 	},
