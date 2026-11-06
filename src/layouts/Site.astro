@@ -28,7 +28,7 @@ const socials = [
 		<nav aria-label="Main">
 			<a href="/" aria-current={path === '/' ? 'page' : undefined}>Home</a>
 			<a href="/docs/" aria-current={path.startsWith('/docs') ? 'page' : undefined}>Documentation</a>
-			<a href="/media/" aria-current={path.startsWith('/media') ? 'page' : undefined}>Media</a>
+			<a href="/watch/" aria-current={path.startsWith('/watch') ? 'page' : undefined}>Watch</a>
 			<a class="cta small" href={site.appStore}>Get the app</a>
 		</nav>
 	</header>
@@ -36,7 +36,7 @@ const socials = [
 	<footer>
 		<p>
 			© Illusive Lightworks ·
-			<a href="/">Home</a> · <a href="/docs/">Documentation</a> · <a href="/media/">Media</a>
+			<a href="/">Home</a> · <a href="/docs/">Documentation</a> · <a href="/watch/">Watch</a>
 			{socials.map(([name, href]) => (<> · <a href={href}>{name}</a></>))}
 			· <a href={site.appStore}>App Store</a>
 		</p>

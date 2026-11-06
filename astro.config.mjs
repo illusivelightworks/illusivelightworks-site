@@ -44,7 +44,7 @@ export default defineConfig({
 					{ label: 'Settings', slug: 'docs/settings' },
 					{ label: 'Gestures and shortcuts', slug: 'docs/gestures' },
 					{ label: 'Troubleshooting', slug: 'docs/troubleshooting' },
-					{ label: 'Media', link: '/media/' },
+					{ label: 'Watch', link: '/watch/' },
 				]},
 			],
 		}),

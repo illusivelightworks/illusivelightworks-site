@@ -1,12 +1,12 @@
 ---
 // Replaces Starlight's social-icons slot in the docs header so the docs show the same
-// top menu as the rest of the site: Home, Documentation, Media. The social icons stay.
+// top menu as the rest of the site: Home, Documentation, Watch. The social icons stay.
 import Default from '@astrojs/starlight/components/SocialIcons.astro';
 const path = Astro.url.pathname;
 const links = [
 	['Home', '/', path === '/'],
 	['Documentation', '/docs/', path.startsWith('/docs')],
-	['Media', '/media/', path.startsWith('/media')],
+	['Watch', '/watch/', path.startsWith('/watch')],
 ] as const;
 ---
 <nav class="site-menu" aria-label="Site">

@@ -4,11 +4,11 @@ import { site } from '../data/site';
 
 // The App Store slides already carry their own headlines, so the page adds just one above them.
 const slides = [
-	{ src: '/img/mac-slide1.png', alt: 'Pick the art: a library of animations, real-time shaders and online media' },
-	{ src: '/img/mac-slide2.png', alt: 'Precision alignment: drag the corners to fit walls, windows and objects' },
-	{ src: '/img/mac-slide3.png', alt: 'Different art in every shape: additive and subtractive masks' },
-	{ src: '/img/mac-slide4.png', alt: 'Warp it, tune it: paint organic warps, then adjust color and speed' },
-	{ src: '/img/mac-slide5.png', alt: 'Save it, share it, reuse it: keep every project by name' },
+	{ src: '/img/mac-slide1.png', full: '/img/full/mac-slide1.jpg', alt: 'Pick the art: a library of animations, real-time shaders and online media' },
+	{ src: '/img/mac-slide2.png', full: '/img/full/mac-slide2.jpg', alt: 'Precision alignment: drag the corners to fit walls, windows and objects' },
+	{ src: '/img/mac-slide3.png', full: '/img/full/mac-slide3.jpg', alt: 'Different art in every shape: additive and subtractive masks' },
+	{ src: '/img/mac-slide4.png', full: '/img/full/mac-slide4.jpg', alt: 'Warp it, tune it: paint organic warps, then adjust color and speed' },
+	{ src: '/img/mac-slide5.png', full: '/img/full/mac-slide5.jpg', alt: 'Save it, share it, reuse it: keep every project by name' },
 ];
 ---
 <Site title="Illusive Lightworks | ILW Light Mapper" description="ILW Light Mapper is a real-time projection mapping app for iPhone, iPad and Mac. Align video to any surface, mask it, warp it and cast it.">
@@ -24,22 +24,61 @@ const slides = [
 
 	<section class="marquee" aria-label="ILW Light Mapper screenshots">
 		<div class="track">
-			{slides.map((s) => <img src={s.src} alt={s.alt} width="1400" height="875" />)}
-			{slides.map((s) => <img src={s.src} alt="" aria-hidden="true" width="1400" height="875" loading="lazy" />)}
+			{slides.map((s, i) => (
+				<button type="button" class="slide" data-index={i} aria-label={`View full size: ${s.alt}`}>
+					<img src={s.src} alt="" width="1400" height="875" />
+				</button>
+			))}
+			{slides.map((s, i) => (
+				<button type="button" class="slide" data-index={i} tabindex="-1" aria-hidden="true">
+					<img src={s.src} alt="" width="1400" height="875" loading="lazy" />
+				</button>
+			))}
 		</div>
 	</section>
+
+	<dialog id="lightbox" aria-label="Screenshot, full size">
+		<button type="button" class="lb-close" aria-label="Close">×</button>
+		<button type="button" class="lb-nav lb-prev" aria-label="Previous screenshot">‹</button>
+		<img id="lb-img" alt="" />
+		<button type="button" class="lb-nav lb-next" aria-label="Next screenshot">›</button>
+	</dialog>
 
 	<section class="more">
 		<a class="tile" href="/docs/">
 			<h2>Documentation</h2>
 			<p>Two steps from a blank project to art on your wall.</p>
 		</a>
-		<a class="tile" href="/media/">
-			<h2>Media</h2>
+		<a class="tile" href="/watch/">
+			<h2>Watch</h2>
 			<p>Clips of real surfaces, real art and the app in use.</p>
 		</a>
 	</section>
 </Site>
+
+<script define:vars={{ slides }}>
+	const dlg = document.getElementById('lightbox');
+	const big = document.getElementById('lb-img');
+	let current = 0;
+	function show(i) {
+		current = (i + slides.length) % slides.length;
+		big.src = slides[current].full;
+		big.alt = slides[current].alt;
+	}
+	document.querySelectorAll('.marquee .slide').forEach((b) => {
+		b.addEventListener('click', () => { show(Number(b.dataset.index)); dlg.showModal(); });
+	});
+	dlg.querySelector('.lb-close').addEventListener('click', () => dlg.close());
+	dlg.querySelector('.lb-prev').addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
+	dlg.querySelector('.lb-next').addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
+	// Click the dark area (not the picture or arrows) to close.
+	dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+	dlg.addEventListener('keydown', (e) => {
+		if (e.key === 'ArrowLeft') show(current - 1);
+		if (e.key === 'ArrowRight') show(current + 1);
+	});
+	dlg.addEventListener('close', () => { big.removeAttribute('src'); });
+</script>
 
 <style is:global>
 	.hero { text-align:center; padding:40px 24px 28px; max-width:900px; margin:0 auto; }
@@ -54,12 +93,25 @@ const slides = [
 		mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
 	.marquee .track { display:flex; width:max-content; animation:drift 60s linear infinite; }
 	.marquee:hover .track, .marquee:focus-within .track { animation-play-state:paused; }
-	.marquee img { height:clamp(240px, 38vw, 460px); width:auto; flex:none; margin-right:22px; border-radius:16px; border:1px solid var(--line); }
+	.marquee .slide { flex:none; margin:0 22px 0 0; padding:0; border:0; background:none; cursor:zoom-in; line-height:0; }
+	.marquee .slide:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:16px; }
+	.marquee .slide img { height:clamp(240px, 38vw, 460px); width:auto; display:block; border-radius:16px; border:1px solid var(--line); transition:border-color .15s; }
+	.marquee .slide:hover img { border-color:var(--accent); }
+
+	/* Full-size viewer */
+	#lightbox { border:0; padding:0; background:transparent; max-width:100vw; max-height:100vh; width:100vw; height:100vh; color:#fff; }
+	#lightbox::backdrop { background:rgba(2,10,12,.92); }
+	#lightbox[open] { display:flex; align-items:center; justify-content:center; gap:12px; }
+	#lightbox #lb-img { max-width:min(calc(100vw - 150px), 2000px); max-height:90vh; width:auto; height:auto; border-radius:12px; box-shadow:0 10px 60px rgba(0,0,0,.6); cursor:default; }
+	#lightbox .lb-close { position:fixed; top:14px; right:18px; font-size:2.2rem; line-height:1; background:rgba(13,42,47,.85); color:#fff; border:1px solid var(--line); border-radius:999px; width:46px; height:46px; cursor:pointer; }
+	#lightbox .lb-nav { flex:none; font-size:2.4rem; line-height:1; background:rgba(13,42,47,.7); color:#fff; border:1px solid var(--line); border-radius:999px; width:48px; height:48px; cursor:pointer; }
+	#lightbox .lb-close:hover, #lightbox .lb-nav:hover { border-color:var(--accent); }
+	@media (max-width:640px) { #lightbox .lb-nav { position:fixed; bottom:18px; } #lightbox .lb-prev { left:18px; } #lightbox .lb-next { right:18px; } #lightbox #lb-img { max-width:96vw; } }
 	@keyframes drift { to { transform:translateX(-50%); } }
 	@media (prefers-reduced-motion: reduce) {
 		.marquee { overflow-x:auto; -webkit-mask-image:none; mask-image:none; }
 		.marquee .track { animation:none; }
-		.marquee img[aria-hidden="true"] { display:none; }
+		.marquee .slide[aria-hidden="true"] { display:none; }
 	}
 
 	.more { max-width:1100px; margin:0 auto; padding:8px 24px 40px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }

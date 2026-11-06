@@ -4,8 +4,8 @@ The Illusive Lightworks website: a landing page plus the ILW Light Mapper docume
 
 ```
 src/pages/index.astro        the landing page (/)
-src/pages/media.astro        the Media page (/media/)
-src/data/videos.ts           videos shown on Media
+src/pages/watch.astro        the Watch page (/watch/)
+src/data/videos.ts           videos shown on Watch
 src/data/site.ts             App Store link, social links
 src/layouts/Site.astro       header and footer for the non-docs pages
 src/components/Screenshot.astro  screenshot slots used in the docs
@@ -27,7 +27,7 @@ npm run build      # checks every page and builds the search index into dist/
 
 Save a PNG (or JPG/WebP) into `public/img/docs/` using the file name listed in `SCREENSHOTS_NEEDED.md` (for example `mask-main.png`). It appears on its page automatically. In the local preview, anything still missing shows as a dashed "screenshot needed" box; on the published site it is hidden (or shows the old App Store slide where one was used as a stand-in).
 
-## Add videos to the Media page
+## Add videos to the Watch page
 
 Open `src/data/videos.ts` and add a line with a TikTok, Instagram or YouTube link and a title. The page works out the platform itself. Videos only load when someone presses play.
 
