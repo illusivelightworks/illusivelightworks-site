@@ -61,14 +61,27 @@ const dev = import.meta.env.DEV;
 
 		{longVideos.length > 0 && <h2 class="sect">Tutorials and longer videos</h2>}
 		{longVideos.length > 0 && (
-			<div class="longs">
-				{longVideos.map((v) => (
-					<button type="button" class="tile-h" data-id={v.id} data-kind="video" aria-label={`Play: ${cleanTitle(v.title)}`}>
-						<img src={`https://i.ytimg.com/vi/${v.id}/hq720.jpg`} alt="" loading="lazy" />
-						<span class="play" aria-hidden="true">▶</span>
-						<span class="cap">{cleanTitle(v.title)}</span>
-					</button>
-				))}
+			<div class="carousel" role="region" aria-roledescription="carousel" aria-label="Tutorials and longer videos">
+				<div class="car-stage">
+					{longVideos.length > 1 && <button type="button" class="car-btn car-prev" aria-label="Previous video">‹</button>}
+					<div class="car-track" tabindex="0">
+						{longVideos.map((v, i) => (
+							<div class="car-slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${longVideos.length}`}>
+								<button type="button" class="tile-h" data-id={v.id} data-kind="video" aria-label={`Play: ${cleanTitle(v.title)}`}>
+									<img src={`https://i.ytimg.com/vi/${v.id}/hq720.jpg`} alt="" loading="lazy" />
+									<span class="play" aria-hidden="true">▶</span>
+								</button>
+								<p class="car-title">{cleanTitle(v.title)}</p>
+							</div>
+						))}
+					</div>
+					{longVideos.length > 1 && <button type="button" class="car-btn car-next" aria-label="Next video">›</button>}
+				</div>
+				{longVideos.length > 1 && (
+					<div class="car-dots">
+						{longVideos.map((_, i) => <button type="button" class={i === 0 ? 'dot on' : 'dot'} data-go={i} aria-label={`Go to video ${i + 1}`}></button>)}
+					</div>
+				)}
 			</div>
 		)}
 
@@ -122,6 +135,27 @@ const dev = import.meta.env.DEV;
 		img.addEventListener('error', () => { if (img.dataset.fallback && img.src !== img.dataset.fallback) img.src = img.dataset.fallback; }, { once: true });
 	});
 
+	// Carousel for the longer videos: one at a time, arrows / dots / swipe / arrow keys.
+	const car = document.querySelector<HTMLElement>('.carousel');
+	if (car) {
+		const track = car.querySelector<HTMLElement>('.car-track')!;
+		const slides = [...track.querySelectorAll<HTMLElement>('.car-slide')];
+		const dots = [...car.querySelectorAll<HTMLElement>('.dot')];
+		const index = () => Math.round(track.scrollLeft / track.clientWidth);
+		const go = (i: number) => {
+			const n = (i + slides.length) % slides.length;
+			track.scrollTo({ left: n * track.clientWidth, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+		};
+		car.querySelector('.car-prev')?.addEventListener('click', () => go(index() - 1));
+		car.querySelector('.car-next')?.addEventListener('click', () => go(index() + 1));
+		dots.forEach((d) => d.addEventListener('click', () => go(Number(d.dataset.go))));
+		track.addEventListener('scroll', () => { const i = index(); dots.forEach((d, k) => d.classList.toggle('on', k === i)); }, { passive: true });
+		track.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowLeft') { e.preventDefault(); go(index() - 1); }
+			if (e.key === 'ArrowRight') { e.preventDefault(); go(index() + 1); }
+		});
+	}
+
 	// YouTube tiles open in a pop-up player. The frame is created on click and removed on close, which also stops playback.
 	const dlg = document.getElementById('player') as HTMLDialogElement;
 	const holder = dlg.querySelector('.pl-frame') as HTMLElement;
@@ -161,7 +195,18 @@ const dev = import.meta.env.DEV;
 
 	/* Shorts: vertical thumbnails, six across on desktop */
 	.media .shorts { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; }
-	.media .longs { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+	.media .carousel { max-width:820px; }
+	.media .car-stage { position:relative; display:flex; align-items:center; gap:12px; }
+	.media .car-track { flex:1; min-width:0; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; border-radius:14px; }
+	.media .car-track::-webkit-scrollbar { display:none; }
+	.media .car-track:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+	.media .car-slide { flex:0 0 100%; scroll-snap-align:center; scroll-snap-stop:always; }
+	.media .car-title { margin:12px 2px 0; font-weight:600; font-size:1.05rem; line-height:1.35; }
+	.media .car-btn { flex:none; width:46px; height:46px; border-radius:999px; border:1px solid var(--line); background:rgba(13,42,47,.85); color:#fff; font-size:2rem; line-height:1; cursor:pointer; padding:0 0 4px; }
+	.media .car-btn:hover { border-color:var(--accent); }
+	.media .car-dots { display:flex; gap:9px; justify-content:center; margin-top:14px; }
+	.media .dot { width:10px; height:10px; padding:0; border-radius:50%; border:1px solid var(--accent); background:transparent; cursor:pointer; }
+	.media .dot.on { background:var(--accent); }
 	.media .tile-v, .media .tile-h { position:relative; display:block; width:100%; padding:0; border:1px solid var(--line); border-radius:12px; overflow:hidden;
 		background:#082b30; cursor:pointer; color:#fff; text-align:left; line-height:0; }
 	.media .tile-v { aspect-ratio:9/16; }
@@ -177,7 +222,6 @@ const dev = import.meta.env.DEV;
 	.media .tile-v:hover .play, .media .tile-h:hover .play, .media .player:hover .play { transform:scale(1.1); }
 	.media .cap { position:absolute; left:0; right:0; bottom:0; padding:30px 10px 9px; font:600 .8rem/1.25 system-ui; background:linear-gradient(transparent, rgba(2,12,14,.92));
 		display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-	.media .tile-h .cap { font-size:.95rem; padding:34px 14px 12px; }
 
 	.media .more-link { margin-top:26px; }
 	.media .empty { border:1px dashed var(--line); border-radius:14px; padding:28px; color:var(--muted); text-align:center; margin-top:28px; }
@@ -197,6 +241,8 @@ const dev = import.meta.env.DEV;
 	@media (max-width:640px) {
 		.media .card.wide { grid-column:auto; }
 		.media .shorts { grid-template-columns:repeat(3,1fr); gap:8px; }
+		.media .car-stage { gap:6px; }
+		.media .car-btn { width:38px; height:38px; font-size:1.6rem; }
 		.media .tile-v .play { width:38px; height:38px; font-size:.9rem; }
 		.media .tile-v .cap { font-size:.68rem; padding:22px 6px 6px; }
 	}
