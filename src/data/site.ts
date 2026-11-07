@@ -8,6 +8,6 @@ export const site = {
 		tiktok: 'https://www.tiktok.com/@illusivelightworks',
 		instagram: 'https://www.instagram.com/illusivelightworks/',
 		youtube: 'https://www.youtube.com/@illusivelightworks',
-		discord: '',
+		discord: 'https://discord.gg/4rUMeD3Kcp',
 	},
 };
