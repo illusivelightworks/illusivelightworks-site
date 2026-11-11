@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://www.illusivelightworks.com',
+	site: 'https://illusivelightworks.com',
 	integrations: [
 		starlight({
 			title: 'ILW Light Mapper',
