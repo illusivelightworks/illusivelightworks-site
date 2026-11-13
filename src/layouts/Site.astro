@@ -28,6 +28,7 @@ const socials = [
 		<nav aria-label="Main">
 			<a href="/" aria-current={path === '/' ? 'page' : undefined}>Home</a>
 			<a href="/docs/" aria-current={path.startsWith('/docs') ? 'page' : undefined}>Documentation</a>
+			<a href="/work/" aria-current={path.startsWith('/work') ? 'page' : undefined}>Work</a>
 			<a href="/watch/" aria-current={path.startsWith('/watch') ? 'page' : undefined}>Watch</a>
 			<a class="cta small" href={site.appStore}>Get the app</a>
 		</nav>
@@ -36,7 +37,7 @@ const socials = [
 	<footer>
 		<p>
 			© Illusive Lightworks ·
-			<a href="/">Home</a> · <a href="/docs/">Documentation</a> · <a href="/watch/">Watch</a>
+			<a href="/">Home</a> · <a href="/docs/">Documentation</a> · <a href="/work/">Work</a> · <a href="/watch/">Watch</a>
 			{socials.map(([name, href]) => (<> · <a href={href}>{name}</a></>))}
 			· <a href={site.appStore}>App Store</a>
 		</p>
@@ -60,4 +61,5 @@ const socials = [
 	.ghost { display:inline-block; border:1px solid var(--line); color:var(--text); padding:12px 22px; border-radius:10px; text-decoration:none; }
 	footer { text-align:center; color:var(--muted); padding:28px 24px 48px; }
 	@media (max-width: 640px) { .top { padding:12px 16px; } .top nav { gap:12px; font-size:.92rem; } .brand { font-size:0; } .brand img { width:30px; height:30px; } }
+	@media (max-width: 520px) { .top { flex-wrap:wrap; gap:6px 12px; } .top nav { flex-wrap:wrap; gap:4px 12px; justify-content:flex-end; font-size:.9rem; } .top nav a.cta { padding:6px 12px; } }
 </style>

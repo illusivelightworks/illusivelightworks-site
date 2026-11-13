@@ -44,3 +44,10 @@ Two working lists live next to this file:
 ## Publish
 
 Pushing to `main` deploys to GitHub Pages (`.github/workflows/deploy.yml`). The custom domain is set by `public/CNAME`.
+
+## Work page (added 2026-11-13)
+
+`src/pages/work.astro` shows the demo reel and five project cards (text lives in the `projects` list at the top of the file; keep claims factual and name the tools).
+- The reel is `public/media/ILW_DemoReel.mp4` (66 MB, 1080p). GitHub rejects files over 100 MB, so this is close to the ceiling. Each time the file is replaced, the repository history grows by its size, so replace it rarely.
+- The poster frame is `public/media/reel-poster.jpg`; the card pictures are `public/img/work/*.jpg` (made from the source footage, no caption text).
+- Source and tools for the reel are in `IllusiveLightWorks/SocialMedia/DemoReel/` (see its README.txt).

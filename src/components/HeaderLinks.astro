@@ -6,6 +6,7 @@ const path = Astro.url.pathname;
 const links = [
 	['Home', '/', path === '/'],
 	['Documentation', '/docs/', path.startsWith('/docs')],
+	['Work', '/work/', path.startsWith('/work')],
 	['Watch', '/watch/', path.startsWith('/watch')],
 ] as const;
 ---

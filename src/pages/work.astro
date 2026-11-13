@@ -1,0 +1,102 @@
+---
+import Site from '../layouts/Site.astro';
+import { site } from '../data/site';
+
+// Edit the text here. Every claim comes from the work itself: keep it factual and name the tools.
+const email = 'illusivelightworks@gmail.com';
+const projects = [
+	{
+		img: '/img/work/temple.jpg', alt: 'A glowing Buddha statue on a projected mandala inside the Galactic Temple tent',
+		label: 'Installation', title: 'Galactic Temple',
+		text: 'An interactive Buddha projection experience built inside a custom tent. Visuals are mostly pre-rendered, with real-time effects stacked and composited live in TouchDesigner. The Alien Orb, a custom-built MIDI controller with a Teensy and LEDs, lets people play the visuals.',
+		meta: 'Same But Different Festival 2026 · TouchDesigner · Teensy · custom MIDI controller',
+	},
+	{
+		img: '/img/work/vortex.jpg', alt: 'A large projected fluid wall glowing blue at night',
+		label: 'Installation', title: 'Lightwave Vortex',
+		text: 'An interactive fluid wall. A Kinect sensor tracks people in front of the screen, and the projected fluid art reacts to their movement. Shown at festivals with several different art walls.',
+		meta: 'PC · NEC projector · Kinect · TouchDesigner · Unreal Engine',
+	},
+	{
+		img: '/img/work/stage.jpg', alt: 'A glowing planet inside a wireframe cube with light streaks, from a stage visuals pack',
+		label: 'Stage visuals', title: 'Calvin Harris, TRNSMT Festival',
+		text: 'A VJ pack of orbit-diagram line work for a main-stage set in Glasgow, 2024, rendered at 4K. The same procedural approach produced digital flower simulations for the stage screens at the 2025 MTV Video Music Awards.',
+		meta: 'Houdini 3D procedural animation · Houdini Vellum simulation',
+	},
+	{
+		img: '/img/work/procedural.jpg', alt: 'A colourful algorithmic mandala',
+		label: 'Original visuals', title: 'Procedural art and renders',
+		text: 'Algorithmic mandalas and high-resolution music-video visuals, generated from code and math. Many of the mandalas are included in the ILW Light Mapper library.',
+		meta: 'Custom algorithmic code and design with VEX and Python · renders in Karma',
+	},
+	{
+		img: '/img/work/app.jpg', alt: 'The ILW Light Mapper app showing a mandala on an adjustable corner grid',
+		label: 'Software', title: 'ILW Light Mapper',
+		text: 'A projection mapping app for iPhone, iPad and Mac. Pin a projection to any wall, door or object, then refine it with masks, warping and color. The home projections in the reel were all made with it.',
+		meta: 'Built in Unreal Engine · iOS, iPadOS and macOS',
+	},
+];
+const follow = [['Instagram', site.social.instagram], ['YouTube', site.social.youtube], ['TikTok', site.social.tiktok]];
+---
+<Site title="Work | Illusive Lightworks" description="Projection mapping, interactive installations and visual design: the Galactic Temple, Lightwave Vortex, stage visuals and ILW Light Mapper." image="/media/reel-poster.jpg">
+	<main class="work">
+		<h1>Work</h1>
+		<p class="lede">Projection mapping, interactive installations and visual design.</p>
+
+		<figure class="reel">
+			<video controls preload="metadata" playsinline poster="/media/reel-poster.jpg" aria-label="Illusive Lightworks demo reel">
+				<source src="/media/ILW_DemoReel.mp4" type="video/mp4" />
+				Your browser can't play this video. <a href="/media/ILW_DemoReel.mp4">Download the reel</a>.
+			</video>
+			<figcaption>Demo reel · 1 minute 42 seconds</figcaption>
+		</figure>
+
+		<div class="grid">
+			{projects.map((p) => (
+				<article class="card">
+					<img src={p.img} alt={p.alt} width="1200" height="800" loading="lazy" />
+					<div class="body">
+						<span class="tag">{p.label}</span>
+						<h2>{p.title}</h2>
+						<p>{p.text}</p>
+						<p class="meta">{p.meta}</p>
+					</div>
+				</article>
+			))}
+		</div>
+
+		<section class="contact">
+			<h2>Working on a space, a show or a project?</h2>
+			<p>Tell us about it. We build projection mapping and interactive visuals for venues, events and installations.</p>
+			<p class="actions">
+				<a class="cta" href={`mailto:${email}`}>Email {email}</a>
+				{follow.filter(([, href]) => href).map(([name, href]) => <a class="ghost" href={href}>{name}</a>)}
+			</p>
+		</section>
+
+		<p class="credits">Concert and broadcast footage in the reel belongs to its owners and is shown to illustrate the visuals created for it.</p>
+	</main>
+</Site>
+
+<style>
+	.work { max-width: 1100px; margin: 0 auto; padding: 8px 24px 64px; }
+	h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 18px 0 4px; letter-spacing: .02em; }
+	.lede { color: var(--muted); font-size: 1.15rem; margin: 0 0 26px; }
+	.reel { margin: 0 0 40px; }
+	.reel video { width: 100%; aspect-ratio: 16 / 9; display: block; background: #000; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 0 60px rgba(0, 229, 218, .10); }
+	.reel figcaption { color: var(--muted); font-size: .9rem; margin-top: 8px; }
+	.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
+	.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+	.card img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #000; }
+	.body { padding: 16px 18px 20px; }
+	.tag { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: #b8d93e; font-weight: 600; }
+	.card h2 { font-size: 1.35rem; margin: 4px 0 8px; }
+	.card p { margin: 0 0 10px; }
+	.card .meta { color: var(--muted); font-size: .9rem; margin: 0; }
+	.contact { margin-top: 48px; padding: 30px 26px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(0, 229, 218, .06), transparent); text-align: center; }
+	.contact h2 { margin: 0 0 8px; font-size: 1.5rem; }
+	.contact p { max-width: 620px; margin: 0 auto 14px; color: var(--muted); }
+	.actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+	.credits { color: var(--muted); font-size: .82rem; text-align: center; margin: 26px auto 0; max-width: 640px; }
+	@media (max-width: 640px) { .work { padding: 4px 16px 48px; } .grid { grid-template-columns: 1fr; } .cta, .ghost { padding: 10px 16px; } }
+</style>
