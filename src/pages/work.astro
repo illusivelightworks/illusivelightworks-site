@@ -31,7 +31,8 @@ const projects = [
 		meta: 'Custom algorithmic code and design with VEX and Python · renders in Karma',
 	},
 	{
-		img: '/img/work/app.jpg', alt: 'The ILW Light Mapper app showing a mandala on an adjustable corner grid',
+		feature: true, reverse: true, w: 900, h: 1600,
+		img: '/img/work/app.jpg', alt: 'A phone held in hand showing the ILW Light Mapper art library, with the same interface projected on the wall behind it next to a framed print',
 		label: 'Software', title: 'ILW Light Mapper',
 		text: 'A projection mapping app for iPhone, iPad and Mac. Pin a projection to any wall, door or object, then refine it with masks, warping and color. The home projections in the reel were all made with it.',
 		meta: 'Built in Unreal Engine · iOS, iPadOS and macOS',
@@ -54,7 +55,7 @@ const follow = [['Instagram', site.social.instagram], ['YouTube', site.social.yo
 
 		<div class="grid">
 			{projects.map((p) => (
-				<article class={p.feature ? 'card feature' : 'card'}>
+				<article class={['card', p.feature && 'feature', p.reverse && 'reverse'].filter(Boolean).join(' ')}>
 					<img src={p.img} alt={p.alt} width={p.w ?? 1200} height={p.h ?? 800} loading="lazy" />
 					<div class="body">
 						<span class="tag">{p.label}</span>
@@ -86,11 +87,13 @@ const follow = [['Instagram', site.social.instagram], ['YouTube', site.social.yo
 	.reel { margin: 0 0 40px; }
 	.reel video { width: 100%; aspect-ratio: 16 / 9; display: block; background: #000; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 0 60px rgba(0, 229, 218, .10); }
 	.reel figcaption { color: var(--muted); font-size: .9rem; margin-top: 8px; }
-	.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+	.grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 22px; }
+	.card { grid-column: span 2; }
 	.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
 	.card img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #000; }
 	.card.feature { grid-column: 1 / -1; flex-direction: row; }
-	.card.feature img { width: min(42%, 440px); aspect-ratio: 3 / 4; flex: none; }
+	.card.feature.reverse { flex-direction: row-reverse; }
+	.card.feature img { width: auto; height: auto; max-width: min(42%, 440px); max-height: 640px; aspect-ratio: auto; flex: none; margin: 0; }
 	.card.feature .body { align-self: center; padding: 28px 34px; }
 	.card.feature h2 { font-size: 1.9rem; }
 	.card.feature p { font-size: 1.05rem; }
@@ -104,6 +107,7 @@ const follow = [['Instagram', site.social.instagram], ['YouTube', site.social.yo
 	.contact p { max-width: 620px; margin: 0 auto 14px; color: var(--muted); }
 	.actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 	.credits { color: var(--muted); font-size: .82rem; text-align: center; margin: 26px auto 0; max-width: 640px; }
-	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .card.feature { flex-direction: column; } .card.feature img { width: min(100%, 420px); margin: 0 auto; } .card.feature .body { padding: 18px 18px 22px; } .card.feature h2 { font-size: 1.5rem; } }
+	@media (max-width: 980px) { .card { grid-column: span 3; } }
+	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .card, .card.feature { grid-column: 1 / -1; } .card.feature, .card.feature.reverse { flex-direction: column; } .card.feature img { max-width: min(100%, 420px); max-height: none; width: 100%; margin: 0 auto; } .card.feature .body { padding: 18px 18px 22px; } .card.feature h2 { font-size: 1.5rem; } }
 	@media (max-width: 640px) { .work { padding: 4px 16px 48px; } .cta, .ghost { padding: 10px 16px; } }
 </style>
