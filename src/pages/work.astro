@@ -13,6 +13,13 @@ const projects = [
 		meta: 'Same But Different Festival 2026 · TouchDesigner · Teensy · custom MIDI controller',
 	},
 	{
+		feature: true, reverse: true, wide: true, w: 1600, h: 900,
+		img: '/img/work/conan.jpg', alt: 'Conan Gray performing on a stage at the 2025 MTV Video Music Awards, with digital flowers falling across the large stage screens',
+		label: 'Stage visuals', title: 'Conan Gray, MTV Video Music Awards 2025',
+		text: 'Digital flowers for the stage screens behind Conan Gray\'s performance. The flowers were simulated in Houdini with Vellum, set to blow in the wind, and the simulation data was then passed to Blender.',
+		meta: 'Houdini · Vellum simulation · Blender',
+	},
+	{
 		img: '/img/work/vortex.jpg', alt: 'A large projected fluid wall glowing blue at night',
 		label: 'Installation', title: 'Lightwave Vortex',
 		text: 'An interactive fluid wall. A Kinect sensor tracks people in front of the screen, and custom particle systems built in Unreal Engine turn their movement into projected fluid art. Shown at festivals with several different art walls.',
@@ -21,8 +28,8 @@ const projects = [
 	{
 		img: '/img/work/stage.jpg', alt: 'A glowing planet inside a wireframe cube with light streaks, from a stage visuals pack',
 		label: 'Stage visuals', title: 'Calvin Harris, TRNSMT Festival',
-		text: 'A VJ pack of orbit-diagram line work for a main-stage set in Glasgow, 2024, rendered at 4K. The same procedural approach produced digital flower simulations for the stage screens at the 2025 MTV Video Music Awards.',
-		meta: 'Houdini 3D procedural animation · Houdini Vellum simulation',
+		text: 'A VJ pack of orbit-diagram line work for a main-stage set in Glasgow, 2024, rendered at 4K.',
+		meta: 'Houdini 3D procedural animation',
 	},
 	{
 		img: '/img/work/procedural.jpg', alt: 'A gold algorithmic mandala with intricate repeating detail, on black',
@@ -31,7 +38,7 @@ const projects = [
 		meta: 'Custom algorithmic code and design with VEX and Python · renders in Karma',
 	},
 	{
-		feature: true, reverse: true, w: 900, h: 1600,
+		feature: true, w: 900, h: 1600,
 		img: '/img/work/app.jpg', alt: 'A phone held in hand showing the ILW Light Mapper art library, with the same interface projected on the wall behind it next to a framed print',
 		label: 'Software', title: 'ILW Light Mapper',
 		text: 'A projection mapping app for iPhone, iPad and Mac. Pin a projection to any wall, door or object, then refine it with masks, warping and color. The home projections in the reel were all made with it.',
@@ -55,7 +62,7 @@ const follow = [['Instagram', site.social.instagram], ['YouTube', site.social.yo
 
 		<div class="grid">
 			{projects.map((p) => (
-				<article class={['card', p.feature && 'feature', p.reverse && 'reverse'].filter(Boolean).join(' ')}>
+				<article class={['card', p.feature && 'feature', p.reverse && 'reverse', p.wide && 'wide'].filter(Boolean).join(' ')}>
 					<img src={p.img} alt={p.alt} width={p.w ?? 1200} height={p.h ?? 800} loading="lazy" />
 					<div class="body">
 						<span class="tag">{p.label}</span>
@@ -94,6 +101,7 @@ const follow = [['Instagram', site.social.instagram], ['YouTube', site.social.yo
 	.card.feature { grid-column: 1 / -1; flex-direction: row; }
 	.card.feature.reverse { flex-direction: row-reverse; }
 	.card.feature img { width: auto; height: auto; max-width: min(42%, 440px); max-height: 640px; aspect-ratio: auto; flex: none; margin: 0; }
+	.card.feature.wide img { max-width: min(58%, 700px); max-height: none; }
 	.card.feature .body { align-self: center; padding: 28px 34px; }
 	.card.feature h2 { font-size: 1.9rem; }
 	.card.feature p { font-size: 1.05rem; }
@@ -108,6 +116,6 @@ const follow = [['Instagram', site.social.instagram], ['YouTube', site.social.yo
 	.actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 	.credits { color: var(--muted); font-size: .82rem; text-align: center; margin: 26px auto 0; max-width: 640px; }
 	@media (max-width: 980px) { .card { grid-column: span 3; } }
-	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .card, .card.feature { grid-column: 1 / -1; } .card.feature, .card.feature.reverse { flex-direction: column; } .card.feature img { max-width: min(100%, 420px); max-height: none; width: 100%; margin: 0 auto; } .card.feature .body { padding: 18px 18px 22px; } .card.feature h2 { font-size: 1.5rem; } }
+	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .card, .card.feature { grid-column: 1 / -1; } .card.feature, .card.feature.reverse { flex-direction: column; } .card.feature img { max-width: min(100%, 420px); max-height: none; width: 100%; margin: 0 auto; } .card.feature.wide img { max-width: 100%; } .card.feature .body { padding: 18px 18px 22px; } .card.feature h2 { font-size: 1.5rem; } }
 	@media (max-width: 640px) { .work { padding: 4px 16px 48px; } .cta, .ghost { padding: 10px 16px; } }
 </style>
