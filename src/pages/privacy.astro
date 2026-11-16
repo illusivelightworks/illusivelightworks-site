@@ -1,0 +1,76 @@
+---
+import Site from '../layouts/Site.astro';
+
+const email = 'illusivelightworks@gmail.com';
+const updated = '16 November 2026';
+---
+<Site title="Privacy Policy | Illusive Lightworks" description="What ILW Light Mapper and this website collect, why, and who sees it.">
+	<main class="legal">
+		<h1>Privacy Policy</h1>
+		<p class="lede">Last updated {updated}. This covers the ILW Light Mapper app (iPhone, iPad and Mac) and illusivelightworks.com, both made by Illusive Lightworks.</p>
+
+		<h2>The short version</h2>
+		<ul>
+			<li>Your projects, pictures and videos stay on your device. They are never uploaded to us.</li>
+			<li>The microphone, if you turn on auto beat, is analysed on the device as it plays and is never recorded, stored or sent.</li>
+			<li>We collect simple usage numbers so we can improve the app (below). We do not use advertising identifiers, track you across other apps or sites, or sell your data.</li>
+			<li>We only have your email address if you give it to us.</li>
+		</ul>
+
+		<h2>What the app sends to us</h2>
+		<p>When you use the app it sends short usage reports to our server. Each one is tied to a random install ID the app makes for itself (not your Apple ID, name or phone number) and may include:</p>
+		<ul>
+			<li><strong>Your email address</strong>, only if you entered it in the app. It is then attached to your reports.</li>
+			<li><strong>The device and app:</strong> app version, whether it is iOS or macOS, the device model, and your time zone offset from UTC.</li>
+			<li><strong>How the app is used:</strong> when a session starts and ends, how long the app is open, when it goes to the background, and how long you cast, mirror to a display or project.</li>
+			<li><strong>Projects, as counts and names of artwork, never the pictures:</strong> when you open, create, export or import a project, which artwork each grid uses, and how many grids, masks, videos, images and pieces of your own media it has, and whether warp paint is on.</li>
+			<li><strong>Downloads:</strong> which library artwork or online video you downloaded.</li>
+			<li><strong>Support taps:</strong> which support tier you tapped. Payment is handled entirely by Apple; we never see your card or Apple ID details.</li>
+		</ul>
+
+		<h2>What you choose to send</h2>
+		<ul>
+			<li><strong>Email address.</strong> If you give us your email in the app, we use it to send you news about the app and occasional updates. Every email has an unsubscribe link, and you can ask us to delete it at any time.</li>
+			<li><strong>Messages.</strong> If you write to us from the About screen, we receive your message with your app version and platform. We use it to reply and to improve the app.</li>
+		</ul>
+
+		<h2>The microphone</h2>
+		<p>Auto beat asks for microphone permission. While it is on, the app measures loudness and rhythm in short slices to find the tempo of the music around you, and throws the audio away straight away. Nothing is recorded, saved or uploaded, and you can turn it off or revoke the permission in your device settings at any time.</p>
+
+		<h2>Who else handles data</h2>
+		<ul>
+			<li><strong>Apple</strong> handles purchases and subscriptions, and its own App Store and device analytics under its privacy policy.</li>
+			<li><strong>Supabase</strong> hosts the usage reports, emails and messages described above.</li>
+			<li><strong>Brevo</strong> sends our emails to people who gave us their address.</li>
+			<li><strong>Google</strong> (Apps Script and Sheets) receives emails and messages sent from the app.</li>
+			<li><strong>Backblaze</strong> serves the artwork library; downloading artwork is an ordinary web request that its servers can see.</li>
+			<li><strong>Pixabay</strong> provides the Online media videos. Searching and downloading there passes the words you search for and the video you pick through our server to Pixabay.</li>
+		</ul>
+		<p>These providers only act for us or provide the service you asked for. We do not sell your data or share it for advertising.</p>
+
+		<h2>This website</h2>
+		<p>The site does not use cookies for tracking or advertising. Our hosting provider (GitHub Pages) keeps ordinary server logs such as IP addresses. The Watch page shows videos from our public YouTube channel; if you play one, YouTube may collect data under its own policy.</p>
+
+		<h2>Keeping and deleting your data</h2>
+		<p>We keep usage reports as long as they help us improve the app. To have your email, messages or usage reports deleted, write to us from the address you gave (or tell us your approximate install date and device) and we will remove what we hold about you. Deleting the app removes everything stored on your device.</p>
+
+		<h2>Children</h2>
+		<p>The app is not aimed at children under 13 and we do not knowingly collect their information.</p>
+
+		<h2>Changes</h2>
+		<p>If we change this policy we will update the date above, and tell you in the app if the change is significant.</p>
+
+		<h2>Contact</h2>
+		<p>Questions or requests: <a href={`mailto:${email}`}>{email}</a>, or the message form on the app's About screen.</p>
+	</main>
+</Site>
+
+<style is:global>
+	.legal { max-width:760px; margin:0 auto; padding:24px 24px 56px; }
+	.legal h1 { font-size:clamp(2.2rem,5vw,3.2rem); margin:.2em 0 .1em; }
+	.legal .lede { color:var(--muted); font-size:1.05rem; margin:0 0 18px; }
+	.legal h2 { font-size:1.3rem; margin:30px 0 8px; }
+	.legal p, .legal li { color:var(--text); }
+	.legal ul { padding-left:1.2em; }
+	.legal li { margin:6px 0; }
+</style>
