@@ -1,7 +1,7 @@
 ---
 // <Screenshot name="mask-main" alt="The Mask tool" caption="Optional caption" fallback="/img/mac-slide3.png" />
 //
-// Looks for public/img/docs/<name>.png (or .jpg / .webp). Drop the real screenshot there and it appears.
+// Looks for public/img/docs/<name>.png (or .jpg / .webp; a .webp is treated as a transparent device cut-out and drawn without the frame). Drop the real screenshot there and it appears.
 //   - Missing, in the local preview (npm run dev): a dashed "screenshot needed" box, so you can see what's missing.
 //   - Missing, on the published site: the optional `fallback` image if given, otherwise nothing at all.
 import fs from 'node:fs';
@@ -14,9 +14,11 @@ const exts = ['png', 'jpg', 'jpeg', 'webp'];
 const found = exts.map((e) => `${name}.${e}`).find((f) => fs.existsSync(path.join(process.cwd(), 'public/img/docs', f)));
 const src = found ? `/img/docs/${found}` : fallback;
 const dev = import.meta.env.DEV;
+// .webp files are device cut-outs with a transparent background (scripts/cutout_doc_shots.py): no frame around them.
+const cut = !!src && src.endsWith('.webp');
 ---
 {src && (
-	<figure class="shot">
+	<figure class={cut ? 'shot cut' : 'shot'}>
 		<img src={src} alt={alt} loading="lazy" />
 		{caption && <figcaption>{caption}</figcaption>}
 		{dev && !found && <p class="needs-screenshot">Placeholder image. Real screenshot needed: <code>public/img/docs/{name}.png</code>{note ? ` (${note})` : ''}</p>}
@@ -32,6 +34,7 @@ const dev = import.meta.env.DEV;
 <style>
 	.shot { margin: 1.25rem 0; }
 	.shot img { max-width: 100%; height: auto; display: block; }
+	.shot.cut img { border: 0; border-radius: 0; }
 	.shot figcaption { color: var(--sl-color-gray-3); font-size: var(--sl-text-sm); margin-top: .4rem; }
 	.needs-screenshot { margin: 1rem 0; }
 </style>

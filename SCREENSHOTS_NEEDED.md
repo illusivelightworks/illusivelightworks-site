@@ -1,6 +1,6 @@
 # Screenshots still needed for the docs
 
-Pages are now organized as Step 1: Align and Step 2: Refine. Page names below are the doc paths. The docs currently reuse the five 1.6.0 Mac App Store slides (marketing frames with headlines). Plain, cropped screenshots of the real UI would be clearer, and several screens have never been captured.
+Pages are now organized as Step 1: Align and Step 2: Refine. Eight of the images below already exist as device cut-outs (the laptop with its screen, no headline, transparent background) made from the 1.6.2 Mac App Store slides by `scripts/cutout_doc_shots.py`: `color-tool`, `final-display`, `calibration-full`, `artwork-shaders`, `mask-main`, `warp-paint-direction`, `final-display-unsaved`, `saved-projects` (`.webp` in `public/img/docs/`; some reuse the same slide). `artwork-videos` has no image for now (the only VIDEOS-tab slide was the 1.6.0 one, with its headline and the macOS dock); it needs a fresh capture. Plain, cropped screenshots of the real UI would be clearer still, and several screens have never been captured.
 
 Capture on Mac at 2560x1600 if possible, no device frame, dark mode doesn't matter (the app is always dark). PNG. Save into `public/img/docs/` using the file name given.
 
